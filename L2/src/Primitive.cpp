@@ -74,9 +74,9 @@ void Rectangle::populateBuffer(float* data)
 
     //  pos
     //  0               1                      2                        3
-    data[0] = v0.x;    data[6] = v1.x;         data[12] = v2.x;      data[18] = v3.x;
-    data[1] = v0.y;    data[7] = v1.y;         data[13] = v2.y;      data[19] = v3.y;
-    data[2] = v0.z;    data[8] = v1.z;         data[14] = v2.z;      data[20] = v3.z;
+    data[0] = v0.x;    data[9] =  v1.x;         data[18] = v2.x;      data[27] = v3.x;
+    data[1] = v0.y;    data[10] = v1.y;         data[19] = v2.y;      data[28] = v3.y;
+    data[2] = v0.z;    data[11] = v1.z;         data[20] = v2.z;      data[29] = v3.z;
 
     // r                       g                    b
     data[3] =   color.r;     data[4] =  color.g;    data[5] =   color.b;
@@ -147,7 +147,7 @@ void Circle::populateBuffer(float* data)
 
     //  pos
     //  0               1                      2                        3
-    data[0] = v0.x;    data[9] = v1.x;          data[18] = v2.x;      data[27] = v3.x;
+    data[0] = v0.x;    data[9] =  v1.x;         data[18] = v2.x;      data[27] = v3.x;
     data[1] = v0.y;    data[10] = v1.y;         data[19] = v2.y;      data[28] = v3.y;
     data[2] = v0.z;    data[11] = v1.z;         data[20] = v2.z;      data[29] = v3.z;
 

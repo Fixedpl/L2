@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <string>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include <glm/glm.hpp>
 
 struct TexCoords
@@ -17,6 +19,7 @@ struct TexCoords
 	glm::vec2 top_left, bot_left, bot_right, top_right;
 
 };
+
 
 class TextureSource
 {
@@ -47,7 +50,8 @@ public:
 	Texture(const uint32_t& texture_slot, const std::string& path);
 	~Texture();
 
-	void addTexture(const std::string& path);
+	void loadTexture(const std::string& path);
+	void loadFont(const std::string& path);
 
 	TexCoords getTextureCoordinatesNormalised() { return TexCoords(); }
 
@@ -66,14 +70,19 @@ private:
 
 	int32_t m_width, m_height, m_BPP;
 
+	// For text
+	FT_Library m_ft;
+	FT_Face m_face;
 };
+
+
 
 class TexturePart : public TextureSource
 {
 public:
 
-	TexturePart() : m_source_texture(nullptr) {}
-	TexturePart(Texture* source) : TextureSource(source->getTextureSlot()), m_source_texture(source) {}
+	TexturePart() : m_source_texture(nullptr), m_width(0.0f), m_height(0.0f) {}
+	TexturePart(Texture* source) : TextureSource(source->getTextureSlot()), m_source_texture(source), m_width(0.0f), m_height(0.0f) {}
 	TexturePart(Texture* source, const TexCoords& tex_coords_rel);
 	TexturePart(Texture* source, const glm::vec2& top_left_rel, const glm::vec2& bot_right_rel);
 
@@ -85,11 +94,22 @@ public:
 
 	TexCoords getTextureCoordinatesNormalised();
 
+	inline float getWidth() const { return m_width; }
+	inline float getHeight() const { return m_height; }
+
 private:
 
 	Texture* m_source_texture;
 
 	TexCoords m_tex_coords;
 
+	float m_width, m_height;
+
 };
 
+struct Character
+{
+	TexturePart texture;
+	float width, height;
+	float bearingX, bearingY;
+};

@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "Texture.h"
 #include "AnimationSystem.h"
+#include "Text.h"
 
 class RenderWindow : public Window, public Renderer
 {

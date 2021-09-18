@@ -25,8 +25,12 @@ private:
 
 	uint32_t array_size = 1000;
 
+
 	Texture tex1;
+	Texture tex3;
 	TexturePart tex2;
+
+	Text title;
 
 	Sprite sprite;
 	Sprite sprite2;

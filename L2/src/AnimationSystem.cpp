@@ -10,7 +10,6 @@ void AnimationSystem::animate(const float& frame_time)
 			m_animations[i]->animate(frame_time);
 			m_render_window->draw(m_animations[i]->getShape());
 		} else {
-			delete m_animations[i];
 			m_animations.erase(m_animations.begin() + i);
 		}
 	}

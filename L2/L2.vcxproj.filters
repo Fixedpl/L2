@@ -66,6 +66,9 @@
     <ClCompile Include="src\Animation.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="src\Text.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\vendor\glm\detail\_features.hpp">
@@ -971,6 +974,9 @@
     <ClInclude Include="src\Animation.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="src\Text.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1381,5 +1387,42 @@
     <None Include="src\vendor\glm\gtx\wrap.inl">
       <Filter>Pliki nagłówkowe</Filter>
     </None>
+    <None Include="res\shader\fragmentShader.frag" />
+    <None Include="res\shader\fragmentShaderCircle.frag" />
+    <None Include="res\shader\fragmentShaderText.frag" />
+    <None Include="res\shader\fragmentShaderTexture.frag" />
+    <None Include="res\shader\vertexShader.vert" />
+    <None Include="res\shader\vertexShaderCircle.vert" />
+    <None Include="res\shader\vertexShaderText.vert" />
+    <None Include="res\shader\vertexShaderTexture.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texture\adios.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="res\texture\waterfall.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="res\texture\waterfall2.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="res\texture\woodwall.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\font\arial.ttf" />
+    <Font Include="res\font\comic.ttf" />
+    <Font Include="res\font\comicbd.ttf" />
+    <Font Include="res\font\comici.ttf" />
+    <Font Include="res\font\comicz.ttf" />
+    <Font Include="res\font\consola.ttf" />
+    <Font Include="res\font\consolab.ttf" />
+    <Font Include="res\font\consolai.ttf" />
+    <Font Include="res\font\consolaz.ttf" />
+    <Font Include="res\font\verdana.ttf" />
+    <Font Include="res\font\verdanab.ttf" />
+    <Font Include="res\font\verdanai.ttf" />
+    <Font Include="res\font\verdanaz.ttf" />
   </ItemGroup>
 </Project>

@@ -5,18 +5,25 @@
 Game::Game()
 	:
 	RenderWindow(1280, 720, "Game"),
-	tex1(0)
+	tex1(0), tex3(1)
 {
 	setVSync(false);
 	
 
-	tex1.addTexture("res/texture/adios.png");
-	
+	tex1.loadTexture("res/texture/adios.png");
+	tex3.loadFont("res/font/arial.ttf");
+
+	title.setRenderer(this);
+	title.setFontTexture(&tex3);
+	title.pos = glm::vec3(200.0f, 500.0f, 0.0f);
+
+	title.setCaption("Adios", 16.0f);
+
 	tex2 = TexturePart(&tex1, TexCoords(glm::vec2(0.0f, 200.0f), glm::vec2(400.0f, 0.0f)));
 
 	sprite.setTextureSource(&tex1);
 	sprite.setRenderer(this);
-	sprite.pos = glm::vec4(100.0f, 100.0f, 0.0f, 1.0f);
+	sprite.pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	sprite.width = 60.0f;
 	sprite.height = 40.0f;
 	
