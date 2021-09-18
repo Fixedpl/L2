@@ -122,6 +122,7 @@ void Texture::loadFont(const std::string& path)
 
 	for (int i = 32; i < 128; i++) {
 		if (FT_Load_Char(m_face, i, FT_LOAD_RENDER)) {
+			std::cout << "[ERROR][FREETYPE] Couldn't load character with id: " << i << "\n";
 			continue;
 		}
 			
@@ -149,6 +150,10 @@ void Texture::loadFont(const std::string& path)
 		*/
 		x += g->bitmap.width;
 	}
+	c[32].width =		c[101].width;
+	c[32].height =		c[101].height;
+	c[32].bearingX =	c[101].bearingX;
+	c[32].bearingY =	c[101].bearingY;
 }
 
 TexturePart::TexturePart(Texture* source, const TexCoords& tex_coords_rel)
