@@ -14,6 +14,7 @@ public:
 
 	void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 	void setUniform1i(const std::string& name, const int32_t& value);
+	void setUniform1f(const std::string& name, const float& value);
 
 	void bind() const;
 

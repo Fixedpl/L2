@@ -4,13 +4,13 @@
 
 
 
-class Shape;
+class DrawableTransformable;
 
 class Animation
 {
 public:
 
-	Animation(Shape* to_animate, const glm::vec2& dest, const float& duration_time);
+	Animation(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time);
 
 	virtual bool animate(const float& time_passed) = 0;
 
@@ -19,11 +19,11 @@ public:
 
 	bool hasFinished() const { return m_is_over; }
 
-	Shape* getShape() { return m_to_animate; }
+	DrawableTransformable* getShape() { return m_to_animate; }
 
 protected:
 
-	Shape* m_to_animate;
+	DrawableTransformable* m_to_animate;
 
 	glm::vec2 m_dest;
 
@@ -39,7 +39,7 @@ class LineTrajectory : public Animation
 {
 public:
 
-	LineTrajectory(Shape* to_animate, const glm::vec2& dest, const float& duration_time)
+	LineTrajectory(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time)
 	: Animation(to_animate, dest, duration_time) {}
 
 	bool animate(const float& time_passed);
@@ -50,7 +50,7 @@ class BezierTrajectory : public Animation
 {
 public:
 
-	BezierTrajectory(Shape* to_animate, const glm::vec2& dest, const float& duration_time, const glm::vec2& control_point)
+	BezierTrajectory(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time, const glm::vec2& control_point)
 		: Animation(to_animate, dest, duration_time), m_control_point(control_point), m_traveler(control_point) {}
 
 	bool animate(const float& time_passed);

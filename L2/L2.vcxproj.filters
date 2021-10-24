@@ -42,16 +42,10 @@
     <ClCompile Include="src\ShaderSystem.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primitive.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="src\Window.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderWindow.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Drawable.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="App\Game.cpp">
@@ -67,6 +61,15 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="src\Text.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primitive.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Drawable.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transformable.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -947,9 +950,6 @@
     <ClInclude Include="src\ShaderSystem.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primitive.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="src\Window.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
@@ -957,9 +957,6 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderWindow.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Drawable.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="App\Game.h">
@@ -975,6 +972,18 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="src\Text.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\nlohmann\json.hpp">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primitive.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Drawable.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Transformable.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1395,6 +1404,7 @@
     <None Include="res\shader\vertexShaderCircle.vert" />
     <None Include="res\shader\vertexShaderText.vert" />
     <None Include="res\shader\vertexShaderTexture.vert" />
+    <None Include="res\font\arial_atlas_data.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\texture\adios.png">
@@ -1407,6 +1417,9 @@
       <Filter>Pliki zasobów</Filter>
     </Image>
     <Image Include="res\texture\woodwall.png">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="res\font\arial_atlas.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>

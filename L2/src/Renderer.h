@@ -5,6 +5,7 @@
 #include "ShaderSystem.h"
 
 
+class BufferFiller;
 class Drawable;
 
 struct Container
@@ -40,7 +41,9 @@ public:
 	Renderer() { init(); };
 	~Renderer();
 
-	void draw(Drawable* drawable);
+	void draw(const State& state);
+	void draw(BufferFiller* drawable);
+	void draw(Drawable* custom_drawable);
 
 	Entry getSpriteEntry(const uint32_t& tex_id);
 	Entry getRectangleEntry();

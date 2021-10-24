@@ -1,216 +1,145 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include "Transformable.h"
 
-#include "Renderer.h"
-#include "Drawable.h"
-#include "Texture.h"
-
-
-
-struct Color
+class Pinch
 {
-	Color() : r(0.0f), g(0.0f), b(0.0f) {}
-	Color(const float& _r, const float& _g, const float& _b) : r(_r), g(_g), b(_b) {}
+public:
 
-	float r, g, b;
+	virtual bool perforates(const glm::vec2& point) = 0;
 
 };
 
-class Shape : public Drawable
+class Colorable
 {
 public:
 
-	Color color;
+	Colorable(const glm::vec4& color) : m_color(color) {}
 
-	glm::mat4 transform;
-
-public:
-
-	Shape(const Color& _color = Color(1.0f, 1.0f, 1.0f)) : transform(1.0f), color(_color) {}
-	Shape(Renderer* renderer, const Entry& entry, const Color& _color = Color(1.0f, 1.0f, 1.0f)) : Drawable(entry), m_renderer(renderer), transform(1.0f), color(_color) {}
-	virtual ~Shape() { m_renderer->releaseEntry(m_entry); }
-
-	virtual glm::vec4 getPosition() const = 0;
-	virtual void setPosition(const glm::vec3& position) = 0;
-
-	virtual void setRenderer(Renderer* renderer) = 0;
+	glm::vec4 getColor() const;
+	void setColor(const glm::vec4& color);
 
 protected:
 
-	State getState();
-
-	virtual uint32_t getArraySize() const = 0;
-
-	virtual void populateBuffer(float* data) = 0;
-
-protected:
-
-	Renderer* m_renderer;
+	glm::vec4 m_color;
 
 };
 
-class Rectangle : public Shape
+class RectangleBase : public Pinch, public Transformable, public Colorable
 {
 public:
 
-	glm::vec4 pos;
-	float width, height;
+	RectangleBase(const glm::vec3& pos, const float& width, const float& height, const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-public:
+	bool perforates(const glm::vec2& point) {
+		// Because its hard to check if point perforates transformed figure
+		// im transforming point by inverse transform and then checking on 
+		// untransformed figure
+		glm::mat4 inverse_transform = glm::affineInverse(getTransform());
 
-	Rectangle() {}
-	Rectangle(Renderer* renderer);
-	Rectangle(Renderer* renderer, const float& _x, const float& _y, const float& _z, const float& _width, const float& _height);
-	Rectangle(Renderer* renderer, const glm::vec3& _pos, const float& _width, const float& _height);
-	Rectangle(Renderer* renderer, const float& _x, const float& _y, const float& _z, const float& _width, const float& _height, const Color& _color);
-	Rectangle(Renderer* renderer, const glm::vec3& _pos, const float& _width, const float& _height, const Color& _color);
+		glm::vec3 pos = getPosition();
 
+		glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, pos.z, 1.0f);
 
-	glm::vec4 getPosition() const { return pos; }
-	void setPosition(const glm::vec3& position);
+		if (point_transform.x >= 0.0f && point_transform.x <= m_width
+			&& point_transform.y >= 0.0f && point_transform.y <= m_height) {
+			return true;
+		}
+		return false;
+	}
 
-	void setRenderer(Renderer* renderer);
+	float getWidth() const;
+	void setWidth(const float& width);
+
+	float getHeight() const;
+	void setHeight(const float& height);
 
 protected:
 
-	void populateBuffer(float* data);
+	float m_width, m_height;
 
-	uint32_t getArraySize() const { return 24; }
+};
 
-private:
+class CircleBase : public Pinch, public Transformable, public Colorable
+{
+public:
 
-	glm::vec4 v0, v1, v2, v3;
+	CircleBase(const glm::vec3& pos, const float& radius, const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+	bool perforates(const glm::vec2& point) {
+		glm::mat4 inverse_transform = glm::affineInverse(getTransform());
+
+		glm::vec3 pos = getPosition();
+
+		glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, pos.z, 1.0f);
+
+		float distance = (point_transform.x - m_radius) * (point_transform.x - m_radius)
+						+ (point_transform.y - m_radius) * (point_transform.y - m_radius);
+		if (distance <= m_radius * m_radius) {
+			return true;
+		}
+		return false;
+	}
+
+	float getRadius() const;
+	void setRadius(const float& radius);
+
+protected:
+
+	float m_radius;
+
+};
+
+class LineBase : public Pinch, public Transformable, public Colorable
+{
+public:
+
+	LineBase(const glm::vec3& start, const glm::vec3& finish, const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+	bool perforates(const glm::vec2& point) {
+		glm::mat4 inverse_transform = glm::affineInverse(getTransform());
+
+		glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, m_start.z, 1.0f);
+
+
+		float a = (m_finish.y - m_start.y) / (m_finish.x - m_start.x);
+
+		float y = a * point_transform.x;
+		if (y == point_transform.y) {
+			return true;
+		}
+		return false;
+	}
+
+	glm::vec3 getLineStart() const;
+	void setLineStart(const glm::vec3& start);
+
+	glm::vec3 getLineFinish() const;
+	void setLineFinish(const glm::vec3& finish);
+
+protected:
+
+	glm::vec3 m_start, m_finish;
 
 };
 
 
-class Circle : public Shape
+class PointBase : public Pinch, public Transformable, public Colorable
 {
 public:
 
-	glm::vec4 pos;
-	float radius;
+	PointBase(const glm::vec3& pos, const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-public:
+	bool perforates(const glm::vec2& point) {
+		glm::mat4 inverse_transform = glm::affineInverse(getTransform());
 
-	Circle() {}
-	Circle(Renderer* renderer);
-	Circle(Renderer* renderer, const float& _x, const float& _y, const float& _z, const float& _radius);
-	Circle(Renderer* renderer, const glm::vec3& _pos, const float& _radius);
-	Circle(Renderer* renderer, const float& _x, const float& _y, const float& _z, const float& _radius, const Color& _color);
-	Circle(Renderer* renderer, const glm::vec3& _pos, const float& _radius, const Color& _color);
+		glm::vec3 pos = getPosition();
 
-	glm::vec4 getPosition() const { return pos; }
-	void setPosition(const glm::vec3& position);
+		glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, pos.z, 1.0f);
 
-	void setRenderer(Renderer* renderer);
-
-protected:
-
-	void populateBuffer(float* data);
-
-	uint32_t getArraySize() const { return 36; }
-
-private:
-
-	glm::vec4 v0, v1, v2, v3;
-
-};
-
-class Line : public Shape
-{
-public:
-
-	glm::vec4 pos1, pos2;
-
-public:
-
-	Line() {}
-	Line(Renderer* renderer);
-	Line(Renderer* renderer, const float& _x1, const float& _y1, const float& _z1, const float& _x2, const float& _y2, const float& _z2);
-	Line(Renderer* renderer, const glm::vec3& _pos1, const glm::vec3& _pos2);
-	Line(Renderer* renderer, const float& _x1, const float& _y1, const float& _z1, const float& _x2, const float& _y2, const float& _z2, const Color& _color);
-	Line(Renderer* renderer, const glm::vec3& _pos1, const glm::vec3& _pos2, const Color& _color);
-
-	glm::vec4 getPosition() const { return pos1; }
-	void setPosition(const glm::vec3& position);
-
-	void setRenderer(Renderer* renderer);
-
-protected:
-
-	void populateBuffer(float* data);
-
-	uint32_t getArraySize() const { return 12; }
-
-private:
-
-	glm::vec4 v0, v1;
-
-};
-
-class Point : public Shape
-{
-public:
-
-	glm::vec4 pos;
-
-public:
-
-	Point() {}
-	Point(Renderer* renderer);
-	Point(Renderer* renderer, const float& _x, const float& _y, const float& _z);
-	Point(Renderer* renderer, const glm::vec3& _pos);
-	Point(Renderer* renderer, const float& _x, const float& _y, const float& _z, const Color& _color);
-	Point(Renderer* renderer, const glm::vec3& _pos, const Color& _color);
-
-	glm::vec4 getPosition() const { return pos; }
-	void setPosition(const glm::vec3& position);
-
-	void setRenderer(Renderer* renderer);
-
-protected:
-
-	void populateBuffer(float* data);
-
-	uint32_t getArraySize() const { return 6; }
-
-};
-
-class Sprite : public Shape
-{
-public:
-
-	glm::vec4 pos;
-	float width, height;
-
-public:
-
-	Sprite() {}
-	Sprite(Renderer* renderer, TextureSource* source_texture);
-	Sprite(Renderer* renderer, TextureSource* source_texture, const float& _x, const float& _y, const float& _z, const float& _width, const float& _height);
-	Sprite(Renderer* renderer, TextureSource* source_texture, const glm::vec3& _pos, const float& _width, const float& _height);
-	Sprite(Renderer* renderer, TextureSource* source_texture, const float& _x, const float& _y, const float& _z, const float& _width, const float& _height, const Color& _color);
-	Sprite(Renderer* renderer, TextureSource* source_texture, const glm::vec3& _pos, const float& _width, const float& _height, const Color& _color);
-
-	glm::vec4 getPosition() const { return pos; }
-	void setPosition(const glm::vec3& position);
-
-	void setRenderer(Renderer* renderer);
-
-	void setTextureSource(TextureSource* texture_source);
-
-protected:
-
-	void populateBuffer(float* data);
-
-	uint32_t getArraySize() const { return 36; }
-
-private:
-
-	glm::vec4 v0, v1, v2, v3;
-
-	TextureSource* m_texture_source;
-
+		if(pos.x == point_transform.x && pos.y == point_transform.y) return true;
+		return false;
+	}
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "Window.h"
 #include "Renderer.h"
-#include "Primitive.h"
+#include "Drawable.h"
 #include "Texture.h"
 #include "AnimationSystem.h"
 #include "Text.h"
@@ -13,7 +13,7 @@ public:
 	RenderWindow(const uint32_t& windowWidth, const uint32_t& windowHeight, const std::string& windowTitle);
 
 protected:
-
+	virtual void onEvent(const float& frame_time) {};
 	virtual void onUpdate(const float& frame_time) {};
 
 	void onDraw(const float& frame_time);

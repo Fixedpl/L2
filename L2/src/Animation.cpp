@@ -1,17 +1,18 @@
 #include "Animation.h"
 
-#include "Primitive.h"
+#include "Drawable.h"
 #include "Animation.h"
 
 
 
-Animation::Animation(Shape* to_animate, const glm::vec2& dest, const float& duration_time)
+Animation::Animation(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time)
 	:
 	m_current_time(0.0f), 
 	m_duration_time(duration_time),
 	m_to_animate(to_animate),
 	m_dest(dest),
-	m_is_over(false)
+	m_is_over(false),
+	m_is_stopped(false)
 
 {
 }
@@ -24,7 +25,7 @@ bool LineTrajectory::animate(const float& time_passed)
 	float move_portion = time_passed / (m_duration_time - m_current_time);
 	m_current_time += time_passed;
 
-	glm::vec4 shape_pos(m_to_animate->getPosition());
+	glm::vec3 shape_pos(m_to_animate->getPosition());
 
 	if (m_current_time >= m_duration_time) {
 		m_is_over = true;
@@ -48,7 +49,7 @@ bool BezierTrajectory::animate(const float& time_passed)
 	float move_portion = time_passed / (m_duration_time - m_current_time);
 	m_current_time += time_passed;
 
-	glm::vec4 shape_pos(m_to_animate->getPosition());
+	glm::vec3 shape_pos(m_to_animate->getPosition());
 
 	if (m_current_time >= m_duration_time) {
 		m_is_over = true;

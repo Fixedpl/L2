@@ -113,6 +113,16 @@ void Shader::setUniform1i(const std::string& name, const int32_t& value)
 	glUniform1i(location, value);
 }
 
+void Shader::setUniform1f(const std::string& name, const float& value)
+{
+	int32_t location = getUniformLocation(name);
+	if (location == -1) {
+		std::cout << "[ERROR][SHADER] Couldn't find uniform: " << name << std::endl;
+		return;
+	}
+	glUniform1f(location, value);
+}
+
 void Shader::bind() const
 {
 	glUseProgram(m_id);

@@ -17,11 +17,22 @@ void Renderer::draw()
 	}
 }
 
-void Renderer::draw(Drawable* drawable)
+void Renderer::draw(const State& state)
+{
+	m_containers[state.entry.container].buffer->update(state.data, state.entry.id);
+	delete[] state.data;
+}
+
+void Renderer::draw(BufferFiller* drawable)
 {
 	State state = drawable->getState();
 	m_containers[state.entry.container].buffer->update(state.data, state.entry.id);
 	delete[] state.data;
+}
+
+void Renderer::draw(Drawable* custom_drawable)
+{
+	custom_drawable->draw();
 }
 
 Entry Renderer::getSpriteEntry(const uint32_t& tex_id)
@@ -60,6 +71,7 @@ void Renderer::init()
 	Shader* default33_shader = m_shader_system.loadShader("res/shader/vertexShader.vert", "res/shader/fragmentShader.frag");
 	Shader* circle_shader = m_shader_system.loadShader("res/shader/vertexShaderCircle.vert", "res/shader/fragmentShaderCircle.frag");
 	Shader* texture_shader = m_shader_system.loadShader("res/shader/vertexShaderTexture.vert", "res/shader/fragmentShaderTexture.frag");
+	Shader* font_shader = m_shader_system.loadShader("res/shader/vertexShaderText.vert", "res/shader/fragmentShaderText.frag");
 	
 	texture_shader->bind();
 
@@ -67,16 +79,26 @@ void Renderer::init()
 		texture_shader->setUniform1i("u_texture[" + std::to_string(i) + "]", i);
 	}
 
-	for (uint32_t i = 0; i < 10; ++i) {
+	font_shader->bind();
 
-		AutomaticBuffer* abt = new AutomaticBuffer(
-									new IndexedBuffer(
-										DrawType::DYNAMIC, Usage::TRIANGLE,
-										std::vector<uint32_t>{ 3, 3, 2, 1 },
-										std::vector<uint32_t>{ 0, 1, 2, 0, 2, 3}));
-		abt->create(100);
-		m_containers.emplace_back(Container(abt, texture_shader));
-	}
+	font_shader->setUniform1i("u_texture", 0);
+
+	// PRECOMPUTED FONT SETTINGS
+	font_shader->setUniform1f("width[0]", 0.1f);
+	font_shader->setUniform1f("width[1]", 0.1f);
+	font_shader->setUniform1f("width[2]", 0.2f);
+	font_shader->setUniform1f("width[3]", 0.25f);
+	font_shader->setUniform1f("width[4]", 0.3f);
+	font_shader->setUniform1f("width[5]", 0.4f);
+	font_shader->setUniform1f("width[6]", 0.45f);
+
+	font_shader->setUniform1f("edge[0]", 0.8f);
+	font_shader->setUniform1f("edge[1]", 0.75f);
+	font_shader->setUniform1f("edge[2]", 0.68f);
+	font_shader->setUniform1f("edge[3]", 0.68f);
+	font_shader->setUniform1f("edge[4]", 0.6f);
+	font_shader->setUniform1f("edge[5]", 0.57f);
+	font_shader->setUniform1f("edge[6]", 0.55f);
 
 	IndexedBuffer* rectangle_buf = new IndexedBuffer(
 									DrawType::DYNAMIC, Usage::TRIANGLE,
@@ -115,4 +137,26 @@ void Renderer::init()
 	m_containers.emplace_back(Container(circle_buffer, circle_shader));
 	m_containers.emplace_back(Container(line_buffer, default33_shader));
 	m_containers.emplace_back(Container(point_buffer, default33_shader));
+
+
+	AutomaticBuffer* font_buffer = new AutomaticBuffer(
+		new IndexedBuffer(
+			DrawType::DYNAMIC, Usage::TRIANGLE,
+			std::vector<uint32_t>{ 3, 3, 2, 1 },
+			std::vector<uint32_t>{ 0, 1, 2, 0, 2, 3}));
+
+	font_buffer->create(100);
+	m_containers.emplace_back(Container(font_buffer, font_shader));
+
+	for (uint32_t i = 1; i < 10; ++i) {
+
+		AutomaticBuffer* abt = new AutomaticBuffer(
+			new IndexedBuffer(
+				DrawType::DYNAMIC, Usage::TRIANGLE,
+				std::vector<uint32_t>{ 3, 3, 2, 1 },
+				std::vector<uint32_t>{ 0, 1, 2, 0, 2, 3}));
+		abt->create(100);
+		m_containers.emplace_back(Container(abt, texture_shader));
+	}
+
 }

@@ -11,29 +11,28 @@ class Game : protected RenderWindow
 public:
 	
 	Game();
+	~Game();
 
 	void run();
 
 protected:
 
-	void onUpdate(const float& frame_time);
+	void onEvent(const float& frame_time);
+	void onUpdate(const float& frame_time);	
 
 private:
 
 	static constexpr uint32_t m_window_width = 1280;
 	static constexpr uint32_t m_window_height = 720;
 
-	uint32_t array_size = 1000;
+	Rectangle* rect;
 
-
-	Texture tex1;
 	Texture tex3;
 	TexturePart tex2;
+	Texture font_tex;
+	Text* title;
 
-	Text title;
-
-	Sprite sprite;
-	Sprite sprite2;
+	Sprite* sprite2;
 
 	bool once = false;
 

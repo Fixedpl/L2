@@ -18,7 +18,9 @@ void RenderWindow::onDraw(const float& frame_time)
 		//onUpdate(frameTime);
 	}*/
 
-	std::cout << 1.0f / frame_time << "\n";
+	//std::cout << 1.0f / frame_time << "\n";
+
+	onEvent(frame_time);
 
 	onUpdate(frame_time);
 

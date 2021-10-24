@@ -3,8 +3,6 @@
 #include <cstdint>
 #include <string>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 #include <glm/glm.hpp>
 
 struct TexCoords
@@ -31,13 +29,13 @@ public:
 
 	virtual TexCoords getTextureCoordinatesNormalised() = 0;
 
-	inline uint32_t getTextureSlot() { return m_texture_slot; };
+	inline float getTextureSlot() { return m_texture_slot; };
 
-	void setTextureSlot(const uint32_t& texture_slot) { m_texture_slot = texture_slot; }
+	void setTextureSlot(const float& texture_slot) { m_texture_slot = texture_slot; }
 
 protected:
 
-	uint32_t m_texture_slot;
+	float m_texture_slot;
 
 };
 
@@ -51,7 +49,6 @@ public:
 	~Texture();
 
 	void loadTexture(const std::string& path);
-	void loadFont(const std::string& path);
 
 	TexCoords getTextureCoordinatesNormalised() { return TexCoords(); }
 
@@ -69,10 +66,6 @@ private:
 	uint32_t m_id;
 
 	int32_t m_width, m_height, m_BPP;
-
-	// For text
-	FT_Library m_ft;
-	FT_Face m_face;
 };
 
 
@@ -107,9 +100,3 @@ private:
 
 };
 
-struct Character
-{
-	TexturePart texture;
-	float width, height;
-	float bearingX, bearingY;
-};

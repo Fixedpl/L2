@@ -47,5 +47,6 @@ void main() {
 		case 30: texColor = texture(u_texture[30], v_tex_coord); break;
 		case 31: texColor = texture(u_texture[31], v_tex_coord); break;
 	}
+
 	gl_FragColor = texColor * vec4(v_color, 1.0);
 };

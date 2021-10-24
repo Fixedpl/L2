@@ -5,39 +5,32 @@
 Game::Game()
 	:
 	RenderWindow(1280, 720, "Game"),
-	tex1(0), tex3(1)
+	tex3(1), font_tex(0)
 {
-	setVSync(false);
-	
+	//setVSync(false);
+	rect = new Rectangle(this, glm::vec3(100.0f, 100.0f, 0.0f), 100.0f, 100.0f);
 
-	tex1.loadTexture("res/texture/adios.png");
-	tex3.loadFont("res/font/arial.ttf");
+	tex3.loadTexture("res/texture/adios.png");
 
-	title.setRenderer(this);
-	title.setFontTexture(&tex3);
-	title.pos = glm::vec3(200.0f, 500.0f, 0.0f);
+	font_tex.loadTexture("res/texture/arial_atlas.png");
 
-	title.setCaption("Adios", 16.0f);
+	Text::setFontTexture(&font_tex);
+	Text::loadFontData("res/font/arial_atlas_data.json");
+	title = new Text(this, "Anarchia ._~=", 26, glm::vec3(700.0f, 250.0f, 0.0f), glm::vec4(0.2f, 0.6f, 0.7f, 1.0f));
 
-	tex2 = TexturePart(&tex1, TexCoords(glm::vec2(0.0f, 200.0f), glm::vec2(400.0f, 0.0f)));
+	sprite2 = new Sprite(this, &tex3, glm::vec3(500.0f, 200.0f, 0.0f), 40.0f, 40.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
-	sprite.setTextureSource(&tex1);
-	sprite.setRenderer(this);
-	sprite.pos = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	sprite.width = 60.0f;
-	sprite.height = 40.0f;
-	
-	sprite2.setTextureSource(&tex2);
-	sprite2.setRenderer(this);
-	sprite2.pos = glm::vec4(500.0f, 200.0f, 0.0f, 1.0f);
-	sprite2.width  = 60.0f;
-	sprite2.height = 40.0f;
+	//test_animation = new BezierTrajectory(&sprite, glm::vec2(400.0f, 400.0f), 2.0f, glm::vec2(100.0f, 400.0f));
+	draw(title);
+	draw(rect);
+	draw(sprite2);
+}
 
-	test_animation = new BezierTrajectory(&sprite, glm::vec2(400.0f, 400.0f), 2.0f, glm::vec2(100.0f, 400.0f));
-
-	draw(&sprite);
-	draw(&sprite2);
-
+Game::~Game()
+{
+	delete rect;
+	delete title;
+	delete sprite2;
 }
 
 void Game::run()
@@ -45,11 +38,29 @@ void Game::run()
 	display();
 }
 
-void Game::onUpdate(const float& frame_time)
+void Game::onEvent(const float& frame_time) 
 {
+	if (isLeftMousePressed()) {
+		glm::vec2 mouse_pos = getLastMousePosition();
+		std::cout << mouse_pos.x << ":" << mouse_pos.y << "\n";
+	}
+
 	if (isKeyPressed(KEY_W) && !once) {
 		once = true;
 		pushAnimation(test_animation);
 	}
+	if (isKeyPressed(KEY_S)) {
+		
+
+		rect->rotate(0.5f);
+
+
+		draw(rect);
+		
+	}
+}
+
+void Game::onUpdate(const float& frame_time)
+{
 	
 }
