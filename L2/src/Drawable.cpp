@@ -1,5 +1,10 @@
 #include "Drawable.h"
+
+#include <iostream>
+#include <glm/gtx/string_cast.hpp>
+
 #include "Texture.h"
+
 
 State BufferFiller::getState()
 {
@@ -13,7 +18,8 @@ void Rectangle::populateBuffer(float* data)
 {
     glm::vec4 v0, v1, v2, v3;
 
-    const glm::mat4& transform = getTransform();
+    glm::mat4 transform = getWorldTransform();
+    //std::cout << glm::to_string(transform) << "\n";
 
     v0.x = -m_origin.x;    v1.x = -m_origin.x;             v2.x = -m_origin.x + m_width;  v3.x = -m_origin.x + m_width;
     v0.y = -m_origin.y;    v1.y = -m_origin.y + m_height;  v2.y = -m_origin.y + m_height; v3.y = -m_origin.y;
@@ -42,7 +48,7 @@ void Circle::populateBuffer(float* data)
 {
     glm::vec4 v0, v1, v2, v3;
 
-    const glm::mat4& transform = getTransform();
+    glm::mat4 transform = getWorldTransform();
 
 
     v0.x = -m_origin.x;    v1.x = -m_origin.x;                v2.x = -m_origin.x + 2 * m_radius; v3.x = -m_origin.x + 2 * m_radius;
@@ -88,7 +94,7 @@ void Line::populateBuffer(float* data)
     v0.w = 1.0f;           v1.w = 1.0f;                
 
 
-    const glm::mat4& transform = getTransform();
+    glm::mat4 transform = getWorldTransform();
 
     v0 = transform * v0;
     v1 = transform * v1;
@@ -108,7 +114,7 @@ void Point::populateBuffer(float* data)
 {
     glm::vec4 v0(0.0f);
 
-    const glm::mat4& transform = getTransform();
+    glm::mat4 transform = getWorldTransform();
 
     v0 = transform * v0;
 
@@ -126,7 +132,7 @@ void Sprite::populateBuffer(float* data)
 {
     glm::vec4 v0, v1, v2, v3;
 
-    const glm::mat4& transform = getTransform();
+   glm::mat4 transform = getWorldTransform();
 
     v0.x = -m_origin.x;    v1.x = -m_origin.x;            v2.x = -m_origin.x + m_width;    v3.x = -m_origin.x + m_width;
     v0.y = -m_origin.y;    v1.y = -m_origin.y + m_height; v2.y = -m_origin.y + m_height;   v3.y = -m_origin.y;

@@ -88,7 +88,7 @@ void Text::setCaption(const std::string& caption, const uint32_t& font_size, con
 			tex_id, 
 			font_color
 		);
-
+		letter->setParent(this);
 		
 		m_sprite_caption.push_back(letter);
 	}
@@ -207,9 +207,6 @@ void Text::draw()
 
 	for (auto& character : m_sprite_caption) {
 		character->setColor(getColor());
-		
-		//character->addTransform(getTransform());
-
 		
 		m_renderer->draw(character);
 	}

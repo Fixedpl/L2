@@ -27,11 +27,18 @@ public:
 
 	void scale(const float& percent);
 
+	glm::mat4 getWorldTransform();
 	const glm::mat4& getTransform();
 	void setTransform(const glm::mat4& transform);
 
+
+	Transformable* getParent() const;
+	void setParent(Transformable* parent);
+
 protected:
 	
+	Transformable* m_parent;
+
 	bool m_matrix_requires_update;
 
 	glm::vec3 m_position;

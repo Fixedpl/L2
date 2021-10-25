@@ -53,8 +53,9 @@ void Game::onEvent(const float& frame_time)
 		
 
 		rect->rotate(0.5f);
-
-
+		title->move(glm::vec3(-1.0f, 0.0f, 0.0f));
+		title->rotate(0.5f);
+		draw(title);
 		draw(rect);
 		
 	}

@@ -1,5 +1,8 @@
 #include "Transformable.h"
+
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 Transformable::Transformable(const glm::vec3& position, const glm::vec3& origin)
 	: 
@@ -8,7 +11,8 @@ Transformable::Transformable(const glm::vec3& position, const glm::vec3& origin)
 	m_rotation(0.0f), 
 	m_origin(origin), 
 	m_position(position),
-	m_matrix_requires_update(true)
+	m_matrix_requires_update(true),
+	m_parent(nullptr)
 {
 }
 
@@ -73,6 +77,17 @@ void Transformable::scale(const float& percent)
 	m_scale *= percent;
 }
 
+glm::mat4 Transformable::getWorldTransform()
+{
+	glm::mat4 world_transform = getTransform();
+	Transformable* it = m_parent;
+	while (it) {
+		world_transform = it->getTransform() * world_transform;
+		it = it->m_parent;
+	}
+	return world_transform;
+}
+
 const glm::mat4& Transformable::getTransform()
 {
 	if (m_matrix_requires_update) {
@@ -90,6 +105,16 @@ const glm::mat4& Transformable::getTransform()
 void Transformable::setTransform(const glm::mat4& transform)
 {
 	m_transform = transform;
+}
+
+Transformable* Transformable::getParent() const
+{
+	return m_parent;
+}
+
+void Transformable::setParent(Transformable* parent)
+{
+	m_parent = parent;
 }
 
 

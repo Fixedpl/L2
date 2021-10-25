@@ -111,9 +111,12 @@ class Circle : public CircleBase, public BufferFiller
 public:
 
 	Circle(Renderer* renderer,
-		   const glm::vec3& pos, const float& radius, const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))
-		: BufferFiller(renderer, renderer->getCircleEntry()),
-		  CircleBase(pos, radius, color) {}
+		   const glm::vec3& pos, 
+		   const float& radius, 
+		   const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))
+		   :
+		   BufferFiller(renderer, renderer->getCircleEntry()),
+		   CircleBase(pos, radius, color) {}
 
 
 protected:
