@@ -1,4 +1,7 @@
 #include "Renderer.h"
+
+#include <iostream>
+
 #include "Drawable.h"
 
 Renderer::~Renderer()
@@ -34,6 +37,12 @@ void Renderer::draw(Drawable* custom_drawable)
 {
 	custom_drawable->draw();
 }
+
+Renderer::Renderer()
+{
+	init();
+}
+
 
 Entry Renderer::getSpriteEntry(const uint32_t& tex_id)
 {
@@ -160,3 +169,5 @@ void Renderer::init()
 	}
 
 }
+
+

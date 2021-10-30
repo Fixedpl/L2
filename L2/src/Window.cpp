@@ -12,7 +12,7 @@ double Window::m_lastCursorX = 0.0;
 double Window::m_lastCursorY = 0.0;
 
 Window::Window(const uint32_t& windowWidth, const uint32_t& windowHeight, const std::string& windowTitle)
-	: m_WindowWidth(windowWidth), m_WindowHeight(windowHeight), m_WindowTitle(windowTitle), m_VSync(true)
+	: m_window_width(windowWidth), m_window_height(windowHeight), m_window_title(windowTitle), m_VSync(true)
 {
 	windowInit();
 }
@@ -30,7 +30,7 @@ void Window::windowInit()
 	}
 		
 		
-	window = glfwCreateWindow(m_WindowWidth, m_WindowHeight, m_WindowTitle.c_str(), NULL, NULL);
+	window = glfwCreateWindow(m_window_width, m_window_height, m_window_title.c_str(), NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		std::cout << "ERROR: Couldn't create window." << std::endl;
@@ -100,11 +100,11 @@ void Window::mouseCallback(GLFWwindow* window, int button, int action, int mods)
 }
 
 unsigned int Window::getWidth() const {
-	return m_WindowWidth;
+	return m_window_width;
 }
 
 unsigned int Window::getHeight() const {
-	return m_WindowHeight;
+	return m_window_height;
 }
 
 void Window::setVSync(const bool& value)
@@ -133,7 +133,7 @@ bool Window::isRightMousePressed()
 
 glm::vec2 Window::getLastMousePosition()
 {
-	return glm::vec2(m_lastCursorX, m_lastCursorY);
+	return glm::vec2(m_lastCursorX, m_window_height - m_lastCursorY - 1);
 }
 
 

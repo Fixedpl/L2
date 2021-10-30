@@ -5,6 +5,8 @@
 
 #include <glm/glm.hpp>
 
+#include "dllexport.h"
+
 struct TexCoords
 {
 	TexCoords() : top_left(0.0f, 1.0f), bot_left(0.0f, 0.0f), bot_right(1.0f, 0.0f), top_right(1.0f, 1.0f) {}
@@ -23,7 +25,7 @@ class TextureSource
 {
 public:
 
-	TextureSource() : m_texture_slot(0) {}
+	TextureSource() : m_texture_slot(0.0f) {}
 	TextureSource(const uint32_t& texture_slot) : m_texture_slot(texture_slot) {}
 
 
@@ -39,7 +41,7 @@ protected:
 
 };
 
-class Texture : public TextureSource
+class LE_API Texture : public TextureSource
 {
 public:
 
@@ -70,7 +72,7 @@ private:
 
 
 
-class TexturePart : public TextureSource
+class LE_API TexturePart : public TextureSource
 {
 public:
 

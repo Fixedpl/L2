@@ -3,7 +3,7 @@
 
 #include "Buffer.h"
 #include "ShaderSystem.h"
-
+#include "dllexport.h"
 
 class BufferFiller;
 class Drawable;
@@ -34,11 +34,11 @@ struct State
 	float* data;
 };
 
-class Renderer
+class LE_API Renderer
 {
 public:
 
-	Renderer() { init(); };
+	Renderer();
 	~Renderer();
 
 	void draw(const State& state);
@@ -68,6 +68,6 @@ protected:
 private:
 
 	std::vector<Container> m_containers;
-
+	
 };
 

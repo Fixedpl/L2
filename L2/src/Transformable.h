@@ -1,14 +1,15 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "dllexport.h"
 
-
-
-class Transformable
+class LE_API Transformable
 {
 public:
 
-	Transformable(const glm::vec3& pos = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3& origin = glm::vec3(0.0f, 0.0f, 0.0f));
+	Transformable();
+	Transformable(const glm::vec3& position, const glm::vec3& origin);
 
+	void addToOrigin(const glm::vec3& to_add);
 	glm::vec3 getOrigin() const;
 	void setOrigin(const glm::vec3& origin);
 
@@ -27,6 +28,7 @@ public:
 
 	void scale(const float& percent);
 
+	glm::vec3 getWorldOrigin();
 	glm::mat4 getWorldTransform();
 	const glm::mat4& getTransform();
 	void setTransform(const glm::mat4& transform);

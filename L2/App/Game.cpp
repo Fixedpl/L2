@@ -16,7 +16,9 @@ Game::Game()
 
 	Text::setFontTexture(&font_tex);
 	Text::loadFontData("res/font/arial_atlas_data.json");
-	title = new Text(this, "Anarchia ._~=", 26, glm::vec3(700.0f, 250.0f, 0.0f), glm::vec4(0.2f, 0.6f, 0.7f, 1.0f));
+	title = new Text(this, "Anarchia ._~=", 26, glm::vec3(200.0f, 200.0f, 0.0f), glm::vec4(0.2f, 0.6f, 0.7f, 1.0f));
+
+	addClickable(title);
 
 	sprite2 = new Sprite(this, &tex3, glm::vec3(500.0f, 200.0f, 0.0f), 40.0f, 40.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -42,7 +44,7 @@ void Game::onEvent(const float& frame_time)
 {
 	if (isLeftMousePressed()) {
 		glm::vec2 mouse_pos = getLastMousePosition();
-		std::cout << mouse_pos.x << ":" << mouse_pos.y << "\n";
+		//std::cout << mouse_pos.x << ":" << mouse_pos.y << "\n";
 	}
 
 	if (isKeyPressed(KEY_W) && !once) {
@@ -53,7 +55,7 @@ void Game::onEvent(const float& frame_time)
 		
 
 		rect->rotate(0.5f);
-		title->move(glm::vec3(-1.0f, 0.0f, 0.0f));
+		//title->move(glm::vec3(-1.0f, 0.0f, 0.0f));
 		title->rotate(0.5f);
 		draw(title);
 		draw(rect);

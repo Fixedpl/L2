@@ -2,24 +2,29 @@
 
 #include <glm/glm.hpp>
 
+#include "dllexport.h"
+
 
 
 class DrawableTransformable;
 
-class Animation
+
+class LE_API Animation
 {
 public:
 
 	Animation(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time);
+	~Animation();
+
 
 	virtual bool animate(const float& time_passed) = 0;
 
-	void start() { m_is_stopped = false; }
-	void stop() { m_is_stopped = true; }
+	void start(); 
+	void stop();
 
-	bool hasFinished() const { return m_is_over; }
+	bool hasFinished() const;
 
-	DrawableTransformable* getShape() { return m_to_animate; }
+	DrawableTransformable* getToAnimate();
 
 protected:
 
@@ -35,23 +40,21 @@ protected:
 
 };
 
-class LineTrajectory : public Animation
+class LE_API LineTrajectory : public Animation
 {
 public:
 
-	LineTrajectory(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time)
-	: Animation(to_animate, dest, duration_time) {}
+	LineTrajectory(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time);
 
 	bool animate(const float& time_passed);
 
 };
 
-class BezierTrajectory : public Animation
+class LE_API BezierTrajectory : public Animation
 {
 public:
 
-	BezierTrajectory(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time, const glm::vec2& control_point)
-		: Animation(to_animate, dest, duration_time), m_control_point(control_point), m_traveler(control_point) {}
+	BezierTrajectory(DrawableTransformable* to_animate, const glm::vec2& dest, const float& duration_time, const glm::vec2& control_point);
 
 	bool animate(const float& time_passed);
 

@@ -7,12 +7,15 @@
 #include <nlohmann/json.hpp>
 
 #include "Drawable.h"
-
-
-
+#include "Primitive.h"
+#include "Texture.h"
+#include "dllexport.h"
+#include "Clickable.h"
 
 struct Character
 {
+	Character();
+
 	TexturePart texture;
 	float width, height;
 	float bearing_left, bearing_right, bearing_bot, bearing_top;
@@ -20,11 +23,11 @@ struct Character
 	float size;
 };
 
-class Text : public DrawableTransformable, public Colorable
+class LE_API Text : public RectangleBase, public Drawable, public ClickablePinch
 {
 public:
 
-	Text(Renderer* renderer, 
+	Text(RenderWindow* renderer,
 		 const std::string& caption, 
 		 const uint32_t& font_size = 12,
 		 const glm::vec3& pos = glm::vec3(0.0f, 0.0f, 0.0f),
@@ -32,7 +35,7 @@ public:
 
 	~Text();
 	
-	static void setFontTexture(Texture* font_texture) { m_font_texture = font_texture; }
+	static void setFontTexture(Texture* font_texture);
 
 	static void loadFontData(const std::string& font_data_path);
 
@@ -43,6 +46,8 @@ public:
 	void setFontSize(const uint32_t& font_size);
 
 protected:
+
+	void onClick();
 
 	void setCaption(const std::string& caption, const uint32_t& font_size, const glm::vec4& font_color);
 
@@ -58,7 +63,7 @@ private:
 
 	std::vector<Sprite*> m_sprite_caption;
 		
-	Renderer* m_renderer;
+	RenderWindow* m_renderer;
 
 	static Texture* m_font_texture;
 

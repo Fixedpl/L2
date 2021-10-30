@@ -4,7 +4,22 @@
 #include <glm/gtx/string_cast.hpp>
 
 #include "Texture.h"
+#include "RenderWindow.h"
 
+BufferFiller::BufferFiller(RenderWindow* renderer,
+                           const Entry& entry, 
+                           const glm::vec4& color)
+:
+Drawable(color),
+m_renderer(renderer), 
+m_entry(entry)
+{
+}
+
+BufferFiller::~BufferFiller()
+{
+    m_renderer->releaseEntry(m_entry);
+}
 
 State BufferFiller::getState()
 {
@@ -14,6 +29,25 @@ State BufferFiller::getState()
     return State(m_entry, arr);
 }
 
+void BufferFiller::draw()
+{
+    m_renderer->draw(getState());
+}
+
+Rectangle::Rectangle(RenderWindow* renderer, const glm::vec3& pos, const float& width, const float& height, const glm::vec4& color)
+:
+BufferFiller(renderer, renderer->getRectangleEntry(), color),
+RectangleBase(width, height)
+{
+    setPosition(pos);
+}
+
+
+inline uint32_t Rectangle::getArraySize() const
+{
+    return 24;
+}
+
 void Rectangle::populateBuffer(float* data)
 {
     glm::vec4 v0, v1, v2, v3;
@@ -21,15 +55,17 @@ void Rectangle::populateBuffer(float* data)
     glm::mat4 transform = getWorldTransform();
     //std::cout << glm::to_string(transform) << "\n";
 
-    v0.x = -m_origin.x;    v1.x = -m_origin.x;             v2.x = -m_origin.x + m_width;  v3.x = -m_origin.x + m_width;
-    v0.y = -m_origin.y;    v1.y = -m_origin.y + m_height;  v2.y = -m_origin.y + m_height; v3.y = -m_origin.y;
-    v0.z = -m_origin.z;    v1.z = -m_origin.z;             v2.z = -m_origin.z ;           v3.z = -m_origin.z;
-    v0.w = 1.0f;           v1.w = 1.0f;                    v2.w = 1.0f;                   v3.w = 1.0f;
+    glm::vec3 origin = getWorldOrigin();
 
-    v0 = transform * v0;
-    v1 = transform * v1;
-    v2 = transform * v2;
-    v3 = transform * v3;
+    v0.x = -origin.x;    v1.x = -origin.x;            v2.x = -origin.x + m_width;    v3.x = -origin.x + m_width;
+    v0.y = -origin.y;    v1.y = -origin.y + m_height; v2.y = -origin.y + m_height;   v3.y = -origin.y;
+    v0.z = -origin.z;    v1.z = -origin.z;            v2.z = -origin.z;              v3.z = -origin.z;
+    v0.w = 1.0f;         v1.w = 1.0f;                 v2.w = 1.0f;                   v3.w = 1.0f;
+
+    v0 = transform * v0 + glm::vec4(origin, 0.0f);
+    v1 = transform * v1 + glm::vec4(origin, 0.0f);
+    v2 = transform * v2 + glm::vec4(origin, 0.0f);
+    v3 = transform * v3 + glm::vec4(origin, 0.0f);
 
     //  pos
     //  0               1                      2                        3
@@ -44,23 +80,40 @@ void Rectangle::populateBuffer(float* data)
     data[21] =  m_color.r;     data[22] = m_color.g;    data[23] =  m_color.b;
 }
 
+Circle::Circle(RenderWindow* renderer, const glm::vec3& pos, const float& radius, const glm::vec4& color)
+:
+BufferFiller(renderer, renderer->getCircleEntry(), color),
+CircleBase(radius)
+{
+    setPosition(pos);
+    setColor(color);
+}
+
+inline uint32_t Circle::getArraySize() const
+{
+    return 36;
+}
+
 void Circle::populateBuffer(float* data)
 {
     glm::vec4 v0, v1, v2, v3;
 
     glm::mat4 transform = getWorldTransform();
 
-
-    v0.x = -m_origin.x;    v1.x = -m_origin.x;                v2.x = -m_origin.x + 2 * m_radius; v3.x = -m_origin.x + 2 * m_radius;
-    v0.y = -m_origin.y;    v1.y = -m_origin.y + 2 * m_radius; v2.y = -m_origin.y + 2 * m_radius; v3.y = -m_origin.y;
-    v0.z = -m_origin.z;    v1.z = -m_origin.z;                v2.z = -m_origin.z;                v3.z = -m_origin.z;
-    v0.w = 1.0f;           v1.w = 1.0f;                       v2.w = 1.0f;                       v3.w = 1.0f;
+    glm::vec3 origin = getWorldOrigin();
 
 
-    v0 = transform * v0;
-    v1 = transform * v1;
-    v2 = transform * v2;
-    v3 = transform * v3;
+
+    v0.x = -origin.x;   v1.x = -origin.x;                   v2.x = -origin.x + 2 * m_radius;    v3.x = -origin.x + 2 * m_radius;
+    v0.y = -origin.y;   v1.y = -origin.y + 2 * m_radius;    v2.y = -origin.y + 2 * m_radius;    v3.y = -origin.y;
+    v0.z = -origin.z;   v1.z = -origin.z;                   v2.z = -origin.z;                   v3.z = -origin.z;
+    v0.w = 1.0f;        v1.w = 1.0f;                        v2.w = 1.0f;                        v3.w = 1.0f;
+
+
+    v0 = transform * v0 + glm::vec4(origin, 0.0f);
+    v1 = transform * v1 + glm::vec4(origin, 0.0f);
+    v2 = transform * v2 + glm::vec4(origin, 0.0f);
+    v3 = transform * v3 + glm::vec4(origin, 0.0f);
 
 
     //  pos
@@ -83,21 +136,36 @@ void Circle::populateBuffer(float* data)
 }
 
 
+Line::Line(RenderWindow* renderer, const glm::vec3& pos1, const glm::vec3& pos2, const glm::vec4& color)
+:
+BufferFiller(renderer, renderer->getLineEntry(), color),
+LineBase(pos1, pos2)
+{
+    setPosition(pos1);
+}
+
+
+inline uint32_t Line::getArraySize() const
+{
+    return 12;
+}
+
 void Line::populateBuffer(float* data)
 {
     glm::vec4 v0, v1;
 
+    glm::vec3 origin = getWorldOrigin();
 
-    v0.x = -m_origin.x;    v1.x = -m_origin.x + m_finish.x - m_start.x;
-    v0.y = -m_origin.y;    v1.y = -m_origin.y + m_finish.y - m_start.y;
-    v0.z = -m_origin.z;    v1.z = -m_origin.z;
-    v0.w = 1.0f;           v1.w = 1.0f;                
+    v0.x = -origin.x;    v1.x = -origin.x + m_finish.x - m_start.x;
+    v0.y = -origin.y;    v1.y = -origin.y + m_finish.y - m_start.y;
+    v0.z = -origin.z;    v1.z = -origin.z;
+    v0.w = 1.0f;         v1.w = 1.0f;                
 
 
     glm::mat4 transform = getWorldTransform();
 
-    v0 = transform * v0;
-    v1 = transform * v1;
+    v0 = transform * v0 + glm::vec4(origin, 0.0f);
+    v1 = transform * v1 + glm::vec4(origin, 0.0f);
 
     //  pos
     //  0               1
@@ -110,13 +178,31 @@ void Line::populateBuffer(float* data)
     data[9] = m_color.r;     data[10] = m_color.g;    data[11] =  m_color.b;
 }
 
+Point::Point(RenderWindow* renderer, const glm::vec3& pos, const glm::vec4& color)
+:
+BufferFiller(renderer, renderer->getPointEntry(), color),
+PointBase(pos)
+{
+    setPosition(pos);
+}
+
+
+inline uint32_t Point::getArraySize() const
+{
+    return 6;
+}
+
 void Point::populateBuffer(float* data)
 {
-    glm::vec4 v0(0.0f);
+    glm::vec4 v0;
 
     glm::mat4 transform = getWorldTransform();
 
-    v0 = transform * v0;
+    glm::vec3 origin = getWorldOrigin();
+
+    v0 = glm::vec4(-origin, 1.0f);
+
+    v0 = transform * v0 + glm::vec4(origin, 0.0f);
 
     //  pos
     //  0
@@ -128,25 +214,51 @@ void Point::populateBuffer(float* data)
     data[3] = m_color.r;     data[4] = m_color.g;    data[5] = m_color.b;
 }
 
+Sprite::Sprite(RenderWindow* renderer, TextureSource* texture_source, const glm::vec3& pos, const float& width, const float& height, const glm::vec4& color)
+:
+BufferFiller(renderer, renderer->getSpriteEntry(texture_source->getTextureSlot()), color),
+RectangleBase(width, height),
+m_texture_source(texture_source)
+{
+    setPosition(pos);
+}
+
+Sprite::Sprite(RenderWindow* renderer, TextureSource* texture_source, const glm::vec3& pos, const float& width, const float& height, const uint32_t& text_size, const glm::vec4& color)
+:
+BufferFiller(renderer, renderer->getSpriteEntry(0), color),
+RectangleBase(width, height),
+m_texture_source(texture_source)
+{
+    setPosition(pos);
+}
+
+inline uint32_t Sprite::getArraySize() const
+{
+    return 36;
+}
+
 void Sprite::populateBuffer(float* data)
 {
     glm::vec4 v0, v1, v2, v3;
 
-   glm::mat4 transform = getWorldTransform();
+    glm::mat4 transform = getWorldTransform();
 
-    v0.x = -m_origin.x;    v1.x = -m_origin.x;            v2.x = -m_origin.x + m_width;    v3.x = -m_origin.x + m_width;
-    v0.y = -m_origin.y;    v1.y = -m_origin.y + m_height; v2.y = -m_origin.y + m_height;   v3.y = -m_origin.y;
-    v0.z = -m_origin.z;    v1.z = -m_origin.z;            v2.z = -m_origin.z;              v3.z = -m_origin.z;
-    v0.w = 1.0f;    v1.w = 1.0f;            v2.w = 1.0f;              v3.w = 1.0f;
+    glm::vec3 origin = getWorldOrigin();
 
-    v0 = transform * v0;
-    v1 = transform * v1;
-    v2 = transform * v2;
-    v3 = transform * v3;
+    v0.x = -origin.x;    v1.x = -origin.x;            v2.x = -origin.x + m_width;    v3.x = -origin.x + m_width;
+    v0.y = -origin.y;    v1.y = -origin.y + m_height; v2.y = -origin.y + m_height;   v3.y = -origin.y;
+    v0.z = -origin.z;    v1.z = -origin.z;            v2.z = -origin.z;              v3.z = -origin.z;
+    v0.w = 1.0f;         v1.w = 1.0f;                 v2.w = 1.0f;                   v3.w = 1.0f;
+
+    v0 = transform * v0 + glm::vec4(origin, 0.0f);
+    v1 = transform * v1 + glm::vec4(origin, 0.0f);
+    v2 = transform * v2 + glm::vec4(origin, 0.0f);
+    v3 = transform * v3 + glm::vec4(origin, 0.0f);
+
 
     //  pos
     //  0               1                      2                        3
-    data[0] = v0.x;     data[9] = v1.x;         data[18] = v2.x;      data[27] = v3.x;
+    data[0] = v0.x;    data[9] =  v1.x;         data[18] = v2.x;      data[27] = v3.x;
     data[1] = v0.y;    data[10] = v1.y;         data[19] = v2.y;      data[28] = v3.y;
     data[2] = v0.z;    data[11] = v1.z;         data[20] = v2.z;      data[29] = v3.z;
 
@@ -174,3 +286,12 @@ void Sprite::populateBuffer(float* data)
     data[26] = texture_slot;
     data[35] = texture_slot;
 }
+
+
+
+Drawable::Drawable(const glm::vec4& color)
+:
+Colorable(color)
+{
+}
+

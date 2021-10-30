@@ -4,12 +4,11 @@
 #include <glm/glm.hpp>
 
 #include "KeyCodes.h"
-
-
+#include "dllexport.h"
 
 class GLFWwindow;
 
-class Window
+class LE_API Window
 {
 public:
 
@@ -24,7 +23,7 @@ public:
 
 	static bool isLeftMousePressed();
 	static bool isRightMousePressed();
-	static glm::vec2 getLastMousePosition();
+	glm::vec2 getLastMousePosition();
 
 	void display();
 
@@ -44,9 +43,9 @@ private:
 private:
 
 	GLFWwindow* window;
-	uint32_t m_WindowWidth;
-	uint32_t m_WindowHeight;
-	std::string m_WindowTitle;
+	uint32_t m_window_width;
+	uint32_t m_window_height;
+	std::string m_window_title;
 	bool m_VSync;
 
 	static std::array<bool, 350> m_Keys;

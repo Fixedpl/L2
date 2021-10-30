@@ -1,18 +1,19 @@
 #pragma once
 #include <vector>
 
-#include "Animation.h"
 
 
 class RenderWindow;
+class Animation;
+
 
 class AnimationSystem
 {
 public:
 
-	AnimationSystem(RenderWindow* render_window) : m_render_window(render_window) {}
+	AnimationSystem(RenderWindow* render_window);
 
-	void addAnimation(Animation* animation) { m_animations.push_back(animation); }
+	void addAnimation(Animation* animation);
 
 	void animate(const float& frame_time);
 

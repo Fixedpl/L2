@@ -4,8 +4,7 @@
 #include <cstdint>
 #include <fstream>
 
-#include "Renderer.h"
-
+#include "RenderWindow.h"
 
 using json = nlohmann::json;
 
@@ -14,14 +13,17 @@ Character c[128];
 Texture* Text::m_font_texture = nullptr;
 
 
-Text::Text(Renderer* renderer, const std::string& caption, const uint32_t& font_size, const glm::vec3& pos, const glm::vec4& color)
-	: Colorable(color),
-	  DrawableTransformable(pos),
-	  m_renderer(renderer), 
-	  m_caption(caption), 
-	  m_font_size(font_size), 
-	  m_requires_update(true)
+Text::Text(RenderWindow* renderer, const std::string& caption, const uint32_t& font_size, const glm::vec3& pos, const glm::vec4& color)
+: 
+Drawable(color),
+RectangleBase(0.0f, 0.0f),
+m_renderer(renderer), 
+m_caption(caption), 
+m_font_size(font_size), 
+m_requires_update(true)
 {
+	setPosition(pos);
+	setCaption(caption);
 }
 
 Text::~Text()
@@ -31,6 +33,16 @@ Text::~Text()
 	}
 }
 
+void Text::setFontTexture(Texture* font_texture)
+{
+	m_font_texture = font_texture;
+}
+
+
+void Text::onClick()
+{
+	//std::cout << "PRESSED TEXT\n";
+}
 
 void Text::setCaption(const std::string& caption, const uint32_t& font_size, const glm::vec4& font_color)
 {
@@ -39,7 +51,9 @@ void Text::setCaption(const std::string& caption, const uint32_t& font_size, con
 	}
 	m_sprite_caption.clear();
 
-	float x_offset = 0;
+	float x_offset = 0.0f;
+	float highest_y = 0.0f;
+
 
 	float font_size_portion = font_size / 48.0f;
 
@@ -49,6 +63,8 @@ void Text::setCaption(const std::string& caption, const uint32_t& font_size, con
 		glm::vec3 sprite_pos = glm::vec3(0.0f);
 		sprite_pos.x += x_offset + character_data.bearing_left * character_data.size * font_size_portion;
 		sprite_pos.y += character_data.bearing_bot * character_data.size * font_size_portion;
+
+		highest_y = std::max(highest_y, character_data.height * font_size_portion);
 
 		x_offset += character_data.advance * character_data.size * font_size_portion;
 
@@ -92,6 +108,10 @@ void Text::setCaption(const std::string& caption, const uint32_t& font_size, con
 		
 		m_sprite_caption.push_back(letter);
 	}
+	setWidth(x_offset);
+	setHeight(highest_y);
+	setOrigin(glm::vec3(x_offset / 2, highest_y / 2, 0.0f));
+	m_requires_update = false;
 }
 
 
@@ -195,6 +215,7 @@ void Text::setFontSize(const uint32_t& font_size)
 	m_font_size = font_size;
 }
 
+
 void Text::draw()
 {
 	// If text has changed or font has changed
@@ -210,4 +231,17 @@ void Text::draw()
 		
 		m_renderer->draw(character);
 	}
+}
+
+Character::Character()
+:
+width(0.0f),
+height(0.0f),
+bearing_left(0.0f),
+bearing_right(0.0f),
+bearing_bot(0.0f),
+bearing_top(0.0f),
+advance(0.0f),
+size(0.0f)
+{
 }

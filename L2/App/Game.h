@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 #include "RenderWindow.h"
-
-
+#include "Drawable.h"
+#include "Text.h"
 
 
 
