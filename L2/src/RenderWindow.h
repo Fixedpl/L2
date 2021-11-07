@@ -4,16 +4,17 @@
 #include "Window.h"
 #include "Renderer.h"
 #include "AnimationSystem.h"
-#include "dllexport.h"
 
 class ClickablePinch;
 
 
-class LE_API RenderWindow : public Window, public Renderer
+class RenderWindow : public Window, public Renderer
 {
 public:
 
 	RenderWindow(const uint32_t& windowWidth, const uint32_t& windowHeight, const std::string& windowTitle);
+
+	void draw(Drawable* drawable);
 
 protected:
 
@@ -24,6 +25,8 @@ protected:
 
 	void addClickable(ClickablePinch* clickable);
 	void releaseClickable(ClickablePinch* clickable);
+
+	void setLineWidth(const float& width);
 
 private:
 

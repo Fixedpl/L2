@@ -1,28 +1,31 @@
 #pragma once
 #include <iostream>
 #include <array>
+
+
 #include <glm/glm.hpp>
 
 #include "KeyCodes.h"
-#include "dllexport.h"
 
 class GLFWwindow;
 
-class LE_API Window
+
+class Window
 {
 public:
 
 	Window(const uint32_t& windowWidth, const uint32_t& windowHeight, const std::string& windowTitle);
+	~Window();
 
-	unsigned int getWidth() const;
-	unsigned int getHeight() const;
+	uint32_t getWidth() const;
+	uint32_t getHeight() const;
 
 	void setVSync(const bool& value);
 
-	static bool isKeyPressed(const unsigned int& key);
+	bool isKeyPressed(const uint32_t& key);
 
-	static bool isLeftMousePressed();
-	static bool isRightMousePressed();
+	bool isLeftMousePressed();
+	bool isRightMousePressed();
 	glm::vec2 getLastMousePosition();
 
 	void display();
@@ -41,7 +44,7 @@ private:
 	static void mouseCallback(GLFWwindow* window, int button, int action, int mods);
 
 private:
-
+	
 	GLFWwindow* window;
 	uint32_t m_window_width;
 	uint32_t m_window_height;

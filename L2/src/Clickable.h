@@ -2,9 +2,8 @@
 #include <glm/glm.hpp>
 
 #include "Primitive.h"
-#include "dllexport.h"
 
-class LE_API Clickable
+class Clickable
 {
 public:
 
@@ -13,10 +12,8 @@ public:
 };
 
 
-class LE_API ClickablePinch : virtual public Clickable, virtual public Pinch
+class ClickablePinch : virtual public Clickable, virtual public Pinch
 {
 public:
-
-	ClickablePinch() {}
 
 };

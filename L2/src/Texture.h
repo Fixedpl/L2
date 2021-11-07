@@ -5,7 +5,6 @@
 
 #include <glm/glm.hpp>
 
-#include "dllexport.h"
 
 struct TexCoords
 {
@@ -35,13 +34,15 @@ public:
 
 	void setTextureSlot(const float& texture_slot) { m_texture_slot = texture_slot; }
 
+
+
 protected:
 
 	float m_texture_slot;
 
 };
 
-class LE_API Texture : public TextureSource
+class Texture : public TextureSource
 {
 public:
 
@@ -72,7 +73,7 @@ private:
 
 
 
-class LE_API TexturePart : public TextureSource
+class TexturePart : public TextureSource
 {
 public:
 

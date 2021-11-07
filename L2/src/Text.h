@@ -9,7 +9,6 @@
 #include "Drawable.h"
 #include "Primitive.h"
 #include "Texture.h"
-#include "dllexport.h"
 #include "Clickable.h"
 
 struct Character
@@ -23,7 +22,7 @@ struct Character
 	float size;
 };
 
-class LE_API Text : public RectangleBase, public Drawable, public ClickablePinch
+class Text : public RectangleBase, public Drawable
 {
 public:
 
@@ -46,8 +45,6 @@ public:
 	void setFontSize(const uint32_t& font_size);
 
 protected:
-
-	void onClick();
 
 	void setCaption(const std::string& caption, const uint32_t& font_size, const glm::vec4& font_color);
 

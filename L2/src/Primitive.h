@@ -3,9 +3,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include "Transformable.h"
-#include "dllexport.h"
 
-class LE_API Pinch
+
+class Pinch
 {
 public:
 
@@ -13,7 +13,7 @@ public:
 
 };
 
-class LE_API Colorable
+class Colorable
 {
 public:
 
@@ -28,7 +28,7 @@ protected:
 
 };
 
-class LE_API RectangleBase : virtual public Transformable, virtual public Pinch
+class RectangleBase : virtual public Transformable, virtual public Pinch
 {
 public:
 
@@ -48,7 +48,7 @@ protected:
 
 };
 
-class LE_API CircleBase : virtual public Transformable, virtual public Pinch
+class CircleBase : virtual public Transformable, virtual public Pinch
 {
 public:
 
@@ -65,7 +65,7 @@ protected:
 
 };
 
-class LE_API LineBase : virtual public Transformable, virtual public Pinch
+class LineBase : virtual public Transformable, virtual public Pinch
 {
 public:
 
@@ -87,7 +87,7 @@ protected:
 };
 
 
-class LE_API PointBase : virtual public Transformable, virtual public Pinch
+class PointBase : virtual public Transformable, virtual public Pinch
 {
 public:
 

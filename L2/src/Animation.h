@@ -2,14 +2,12 @@
 
 #include <glm/glm.hpp>
 
-#include "dllexport.h"
-
 
 
 class DrawableTransformable;
 
 
-class LE_API Animation
+class Animation
 {
 public:
 
@@ -40,7 +38,7 @@ protected:
 
 };
 
-class LE_API LineTrajectory : public Animation
+class LineTrajectory : public Animation
 {
 public:
 
@@ -50,7 +48,7 @@ public:
 
 };
 
-class LE_API BezierTrajectory : public Animation
+class BezierTrajectory : public Animation
 {
 public:
 

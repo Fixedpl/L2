@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Clickable.h"
+#include "Drawable.h"
 
 RenderWindow::RenderWindow(const uint32_t& windowWidth, const uint32_t& windowHeight, const std::string& windowTitle)
 	: Window(windowWidth, windowHeight, windowTitle), m_animation_system(this)
@@ -35,7 +36,7 @@ void RenderWindow::onDraw(const float& frame_time)
 
 	m_animation_system.animate(frame_time);
 
-	draw();
+	Renderer::draw();
 }
 
 void RenderWindow::checkClickables()
@@ -71,4 +72,14 @@ void RenderWindow::releaseClickable(ClickablePinch* clickable)
 		std::cout << "[ERROR] Couldn't erase clickable because it wasn't found\n";
 	}
 
+}
+
+void RenderWindow::setLineWidth(const float& width)
+{
+	glLineWidth(width);
+}
+
+void RenderWindow::draw(Drawable* drawable)
+{
+	drawable->draw();
 }

@@ -3,7 +3,9 @@
 #include "Window.h"
 #include "Renderer.h"
 
+
 std::array<bool, 350> Window::m_Keys;
+
 
 bool Window::m_leftClick = false;
 bool Window::m_rightClick = false;
@@ -12,9 +14,17 @@ double Window::m_lastCursorX = 0.0;
 double Window::m_lastCursorY = 0.0;
 
 Window::Window(const uint32_t& windowWidth, const uint32_t& windowHeight, const std::string& windowTitle)
-	: m_window_width(windowWidth), m_window_height(windowHeight), m_window_title(windowTitle), m_VSync(true)
+: 
+m_window_width(windowWidth), 
+m_window_height(windowHeight),
+m_window_title(windowTitle), 
+m_VSync(true)
 {
 	windowInit();
+}
+
+Window::~Window()
+{
 }
 
 void glfwError(int id, const char* description)
@@ -22,8 +32,33 @@ void glfwError(int id, const char* description)
 	std::cout << description << std::endl;
 }
 
+void Window::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (action == GLFW_PRESS)
+		m_Keys[key] = true;
+	if (action == GLFW_RELEASE)
+		m_Keys[key] = false;
+}
+
+void Window::mouseCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	glfwGetCursorPos(window, &m_lastCursorX, &m_lastCursorY);
+
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+		m_leftClick = true;
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+		m_leftClick = false;
+
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+		m_rightClick = true;
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
+		m_rightClick = false;
+}
+
+
 void Window::windowInit()
 {
+
 	glfwSetErrorCallback(glfwError);
 	if (!glfwInit()) {
 		std::cout << "ERROR: Couldn't initialize GLFW." << std::endl;
@@ -52,6 +87,8 @@ void Window::windowInit()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(0.6f, 0.4f, 0.3f, 1.0f);
@@ -76,28 +113,7 @@ void Window::windowLoop()
 	glfwTerminate();
 }
 
-void Window::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (action == GLFW_PRESS)
-		m_Keys[key] = true;
-	if (action == GLFW_RELEASE)
-		m_Keys[key] = false;
-}
 
-void Window::mouseCallback(GLFWwindow* window, int button, int action, int mods)
-{
-	glfwGetCursorPos(window, &m_lastCursorX, &m_lastCursorY);
-
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-		m_leftClick = true;
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
-		m_leftClick = false;
-
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-		m_rightClick = true;
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
-		m_rightClick = false;
-}
 
 unsigned int Window::getWidth() const {
 	return m_window_width;
@@ -116,7 +132,7 @@ void Window::setVSync(const bool& value)
 		glfwSwapInterval(0);
 }
 
-bool Window::isKeyPressed(const unsigned int& key)
+bool Window::isKeyPressed(const uint32_t& key)
 {
 	return m_Keys[key];
 }
@@ -141,5 +157,4 @@ void Window::display()
 {
 	windowLoop();
 }
-
 

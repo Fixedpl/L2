@@ -3,9 +3,9 @@
 #include "Texture.h"
 #include "Transformable.h"
 #include "RenderWindow.h"
-#include "dllexport.h"
+#include "Clickable.h"
 
-class LE_API Drawable : public Colorable
+class Drawable : public Colorable
 {
 public:
 
@@ -17,16 +17,11 @@ public:
 
 };
 
-class LE_API DrawableTransformable : virtual public Drawable, virtual public Transformable
+class DrawableTransformable : virtual public Drawable, virtual public Transformable
 {
-public:
-
-	DrawableTransformable() {}
-
-
 };
 
-class LE_API BufferFiller : virtual public Drawable
+class BufferFiller : virtual public Drawable
 {
 protected:
 
@@ -59,7 +54,7 @@ protected:
 };
 
 
-class LE_API Sprite : public RectangleBase, public BufferFiller, public DrawableTransformable
+class Sprite : public RectangleBase, public BufferFiller, public DrawableTransformable
 {
 public:
 
@@ -91,7 +86,7 @@ private:
 
 };
 
-class LE_API Rectangle : public RectangleBase, public BufferFiller, public DrawableTransformable
+class Rectangle : public RectangleBase, public BufferFiller, public DrawableTransformable
 {
 public:
 
@@ -109,7 +104,7 @@ private:
 
 };
 
-class LE_API Circle : public CircleBase, public BufferFiller, public DrawableTransformable
+class Circle : public CircleBase, public BufferFiller, public DrawableTransformable
 {
 public:
 
@@ -126,7 +121,7 @@ private:
 
 };
 
-class LE_API Line : public LineBase, public BufferFiller, public DrawableTransformable
+class Line : public LineBase, public BufferFiller, public DrawableTransformable
 {
 public:
 
@@ -143,7 +138,7 @@ private:
 
 };
 
-class LE_API Point : public PointBase, public BufferFiller, public DrawableTransformable
+class Point : public PointBase, public BufferFiller, public DrawableTransformable
 {
 public:
 

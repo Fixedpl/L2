@@ -3,7 +3,6 @@
 
 #include "Buffer.h"
 #include "ShaderSystem.h"
-#include "dllexport.h"
 
 class BufferFiller;
 class Drawable;
@@ -34,7 +33,7 @@ struct State
 	float* data;
 };
 
-class LE_API Renderer
+class Renderer
 {
 public:
 
@@ -43,7 +42,6 @@ public:
 
 	void draw(const State& state);
 	void draw(BufferFiller* drawable);
-	void draw(Drawable* custom_drawable);
 
 	Entry getSpriteEntry(const uint32_t& tex_id);
 	Entry getRectangleEntry();

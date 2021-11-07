@@ -33,15 +33,11 @@ bool RectangleBase::perforates(const glm::vec2& point)
 
 	glm::mat4 inverse_transform = glm::affineInverse(getWorldTransform());
 
-	glm::vec3 pos = getPosition();
-	
-	glm::vec3 origin = getWorldOrigin();
-
-	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x - origin.x, point.y - origin.y, pos.z, 1.0f) + glm::vec4(origin, 0.0f);
+	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, m_position.z, 1.0f);
 
 
-	if (point_transform.x >= 0.0f && point_transform.x <= m_width
-		&& point_transform.y >= 0.0f && point_transform.y <= m_height) {
+	if (point_transform.x >= -m_origin.x && point_transform.x <= -m_origin.x + m_width
+		&& point_transform.y >= -m_origin.y && point_transform.y <= m_height - m_origin.y) {
 		return true;
 	}
 	return false;
@@ -68,11 +64,7 @@ bool CircleBase::perforates(const glm::vec2& point)
 {
 	glm::mat4 inverse_transform = glm::affineInverse(getWorldTransform());
 
-	glm::vec3 pos = getPosition();
-
-	glm::vec3 origin = getWorldOrigin();
-
-	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x - origin.x, point.y - origin.y, pos.z, 1.0f) + glm::vec4(origin, 0.0f);
+	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, m_position.z, 1.0f) - glm::vec4(-m_origin.x, -m_origin.y, 0.0f, 0.0f);
 
 	float distance = (point_transform.x - m_radius) * (point_transform.x - m_radius)
 		+ (point_transform.y - m_radius) * (point_transform.y - m_radius);
@@ -112,13 +104,10 @@ void LineBase::setLineFinish(const glm::vec3& finish)
 
 bool LineBase::perforates(const glm::vec2& point)
 {
+	// WRONG BECAUSE ITS CHECKING INFINITE LINE
 	glm::mat4 inverse_transform = glm::affineInverse(getWorldTransform());
 
-	glm::vec3 origin = getWorldOrigin();
-
-	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x - origin.x, point.y - origin.y, m_start.z, 1.0f) + glm::vec4(origin, 0.0f);
-
-
+	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, m_start.z, 1.0f);
 
 	float a = (m_finish.y - m_start.y) / (m_finish.x - m_start.x);
 
@@ -137,13 +126,9 @@ bool PointBase::perforates(const glm::vec2& point)
 {
 	glm::mat4 inverse_transform = glm::affineInverse(getWorldTransform());
 
-	glm::vec3 pos = getPosition();
+	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x, point.y, m_position.z, 1.0f);
 
-	glm::vec3 origin = getWorldOrigin();
-
-	glm::vec4 point_transform = inverse_transform * glm::vec4(point.x - origin.x, point.y - origin.y, pos.z, 1.0f) + glm::vec4(origin, 0.0f);
-
-	if (pos.x == point_transform.x && pos.y == point_transform.y) return true;
+	if (m_position.x == point_transform.x && m_position.y == point_transform.y) return true;
 	return false;
 }
 

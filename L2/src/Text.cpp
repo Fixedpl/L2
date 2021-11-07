@@ -39,11 +39,6 @@ void Text::setFontTexture(Texture* font_texture)
 }
 
 
-void Text::onClick()
-{
-	//std::cout << "PRESSED TEXT\n";
-}
-
 void Text::setCaption(const std::string& caption, const uint32_t& font_size, const glm::vec4& font_color)
 {
 	for (auto& sprite : m_sprite_caption) {
@@ -64,7 +59,7 @@ void Text::setCaption(const std::string& caption, const uint32_t& font_size, con
 		sprite_pos.x += x_offset + character_data.bearing_left * character_data.size * font_size_portion;
 		sprite_pos.y += character_data.bearing_bot * character_data.size * font_size_portion;
 
-		highest_y = std::max(highest_y, character_data.height * font_size_portion);
+		highest_y = highest_y > character_data.height * font_size_portion ? highest_y : character_data.height * font_size_portion;
 
 		x_offset += character_data.advance * character_data.size * font_size_portion;
 
@@ -104,13 +99,20 @@ void Text::setCaption(const std::string& caption, const uint32_t& font_size, con
 			tex_id, 
 			font_color
 		);
-		letter->setParent(this);
+		if (getChildTransforms()) {
+			m_son = nullptr;
+		}
+		addChildTransform(letter);
 		
 		m_sprite_caption.push_back(letter);
 	}
+	glm::vec3 origin = glm::vec3(x_offset / 2, highest_y / 2, 0.0f);
+	for (auto& letter : m_sprite_caption) {
+		letter->move(-origin);
+	}
 	setWidth(x_offset);
 	setHeight(highest_y);
-	setOrigin(glm::vec3(x_offset / 2, highest_y / 2, 0.0f));
+	setOrigin(origin);
 	m_requires_update = false;
 }
 

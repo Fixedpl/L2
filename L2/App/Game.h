@@ -31,6 +31,7 @@ private:
 	TexturePart tex2;
 	Texture font_tex;
 	Text* title;
+	Circle* test_circle;
 
 	Sprite* sprite2;
 

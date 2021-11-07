@@ -33,11 +33,6 @@ void Renderer::draw(BufferFiller* drawable)
 	delete[] state.data;
 }
 
-void Renderer::draw(Drawable* custom_drawable)
-{
-	custom_drawable->draw();
-}
-
 Renderer::Renderer()
 {
 	init();
@@ -56,12 +51,12 @@ Entry Renderer::getRectangleEntry()
 
 Entry Renderer::getCircleEntry()
 {
-	return Entry(1, m_containers[1].buffer->pullId());
+	return Entry(2, m_containers[2].buffer->pullId());
 }
 
 Entry Renderer::getLineEntry()
 {
-	return Entry(2, m_containers[2].buffer->pullId());
+	return Entry(1, m_containers[1].buffer->pullId());
 }
 
 Entry Renderer::getPointEntry()
@@ -143,8 +138,8 @@ void Renderer::init()
 
 	
 	m_containers.emplace_back(Container(rectangle_buffer, default33_shader));
-	m_containers.emplace_back(Container(circle_buffer, circle_shader));
 	m_containers.emplace_back(Container(line_buffer, default33_shader));
+	m_containers.emplace_back(Container(circle_buffer, circle_shader));
 	m_containers.emplace_back(Container(point_buffer, default33_shader));
 
 

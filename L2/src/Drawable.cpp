@@ -31,7 +31,7 @@ State BufferFiller::getState()
 
 void BufferFiller::draw()
 {
-    m_renderer->draw(getState());
+    dynamic_cast<Renderer*>(m_renderer)->draw(getState());
 }
 
 Rectangle::Rectangle(RenderWindow* renderer, const glm::vec3& pos, const float& width, const float& height, const glm::vec4& color)
@@ -55,17 +55,15 @@ void Rectangle::populateBuffer(float* data)
     glm::mat4 transform = getWorldTransform();
     //std::cout << glm::to_string(transform) << "\n";
 
-    glm::vec3 origin = getWorldOrigin();
+    v0.x = -m_origin.x;    v1.x = -m_origin.x;            v2.x = -m_origin.x + m_width;    v3.x = -m_origin.x + m_width;
+    v0.y = -m_origin.y;    v1.y = -m_origin.y + m_height; v2.y = -m_origin.y + m_height;   v3.y = -m_origin.y;
+    v0.z = -m_origin.z;    v1.z = -m_origin.z;            v2.z = -m_origin.z;              v3.z = -m_origin.z;
+    v0.w = 1.0f;           v1.w = 1.0f;                   v2.w = 1.0f;                     v3.w = 1.0f;
 
-    v0.x = -origin.x;    v1.x = -origin.x;            v2.x = -origin.x + m_width;    v3.x = -origin.x + m_width;
-    v0.y = -origin.y;    v1.y = -origin.y + m_height; v2.y = -origin.y + m_height;   v3.y = -origin.y;
-    v0.z = -origin.z;    v1.z = -origin.z;            v2.z = -origin.z;              v3.z = -origin.z;
-    v0.w = 1.0f;         v1.w = 1.0f;                 v2.w = 1.0f;                   v3.w = 1.0f;
-
-    v0 = transform * v0 + glm::vec4(origin, 0.0f);
-    v1 = transform * v1 + glm::vec4(origin, 0.0f);
-    v2 = transform * v2 + glm::vec4(origin, 0.0f);
-    v3 = transform * v3 + glm::vec4(origin, 0.0f);
+    v0 = transform * v0;
+    v1 = transform * v1;
+    v2 = transform * v2;
+    v3 = transform * v3;
 
     //  pos
     //  0               1                      2                        3
@@ -100,20 +98,18 @@ void Circle::populateBuffer(float* data)
 
     glm::mat4 transform = getWorldTransform();
 
-    glm::vec3 origin = getWorldOrigin();
 
 
+    v0.x = -m_origin.x;   v1.x = -m_origin.x;                   v2.x = -m_origin.x + 2 * m_radius;    v3.x = -m_origin.x + 2 * m_radius;
+    v0.y = -m_origin.y;   v1.y = -m_origin.y + 2 * m_radius;    v2.y = -m_origin.y + 2 * m_radius;    v3.y = -m_origin.y;
+    v0.z = -m_origin.z;   v1.z = -m_origin.z;                   v2.z = -m_origin.z;                   v3.z = -m_origin.z;
+    v0.w = 1.0f;          v1.w = 1.0f;                          v2.w = 1.0f;                          v3.w = 1.0f;
 
-    v0.x = -origin.x;   v1.x = -origin.x;                   v2.x = -origin.x + 2 * m_radius;    v3.x = -origin.x + 2 * m_radius;
-    v0.y = -origin.y;   v1.y = -origin.y + 2 * m_radius;    v2.y = -origin.y + 2 * m_radius;    v3.y = -origin.y;
-    v0.z = -origin.z;   v1.z = -origin.z;                   v2.z = -origin.z;                   v3.z = -origin.z;
-    v0.w = 1.0f;        v1.w = 1.0f;                        v2.w = 1.0f;                        v3.w = 1.0f;
 
-
-    v0 = transform * v0 + glm::vec4(origin, 0.0f);
-    v1 = transform * v1 + glm::vec4(origin, 0.0f);
-    v2 = transform * v2 + glm::vec4(origin, 0.0f);
-    v3 = transform * v3 + glm::vec4(origin, 0.0f);
+    v0 = transform * v0;
+    v1 = transform * v1;
+    v2 = transform * v2;
+    v3 = transform * v3;
 
 
     //  pos
@@ -154,18 +150,16 @@ void Line::populateBuffer(float* data)
 {
     glm::vec4 v0, v1;
 
-    glm::vec3 origin = getWorldOrigin();
-
-    v0.x = -origin.x;    v1.x = -origin.x + m_finish.x - m_start.x;
-    v0.y = -origin.y;    v1.y = -origin.y + m_finish.y - m_start.y;
-    v0.z = -origin.z;    v1.z = -origin.z;
+    v0.x = -m_origin.x;    v1.x = -m_origin.x + m_finish.x - m_start.x;
+    v0.y = -m_origin.y;    v1.y = -m_origin.y + m_finish.y - m_start.y;
+    v0.z = -m_origin.z;    v1.z = -m_origin.z;
     v0.w = 1.0f;         v1.w = 1.0f;                
 
 
     glm::mat4 transform = getWorldTransform();
 
-    v0 = transform * v0 + glm::vec4(origin, 0.0f);
-    v1 = transform * v1 + glm::vec4(origin, 0.0f);
+    v0 = transform * v0;
+    v1 = transform * v1;
 
     //  pos
     //  0               1
@@ -198,11 +192,10 @@ void Point::populateBuffer(float* data)
 
     glm::mat4 transform = getWorldTransform();
 
-    glm::vec3 origin = getWorldOrigin();
 
-    v0 = glm::vec4(-origin, 1.0f);
+    v0 = glm::vec4(-m_origin, 1.0f);
 
-    v0 = transform * v0 + glm::vec4(origin, 0.0f);
+    v0 = transform * v0;
 
     //  pos
     //  0
@@ -243,17 +236,15 @@ void Sprite::populateBuffer(float* data)
 
     glm::mat4 transform = getWorldTransform();
 
-    glm::vec3 origin = getWorldOrigin();
-
-    v0.x = -origin.x;    v1.x = -origin.x;            v2.x = -origin.x + m_width;    v3.x = -origin.x + m_width;
-    v0.y = -origin.y;    v1.y = -origin.y + m_height; v2.y = -origin.y + m_height;   v3.y = -origin.y;
-    v0.z = -origin.z;    v1.z = -origin.z;            v2.z = -origin.z;              v3.z = -origin.z;
+    v0.x = -m_origin.x;    v1.x = -m_origin.x;            v2.x = -m_origin.x + m_width;    v3.x = -m_origin.x + m_width;
+    v0.y = -m_origin.y;    v1.y = -m_origin.y + m_height; v2.y = -m_origin.y + m_height;   v3.y = -m_origin.y;
+    v0.z = -m_origin.z;    v1.z = -m_origin.z;            v2.z = -m_origin.z;              v3.z = -m_origin.z;
     v0.w = 1.0f;         v1.w = 1.0f;                 v2.w = 1.0f;                   v3.w = 1.0f;
 
-    v0 = transform * v0 + glm::vec4(origin, 0.0f);
-    v1 = transform * v1 + glm::vec4(origin, 0.0f);
-    v2 = transform * v2 + glm::vec4(origin, 0.0f);
-    v3 = transform * v3 + glm::vec4(origin, 0.0f);
+    v0 = transform * v0;
+    v1 = transform * v1;
+    v2 = transform * v2;
+    v3 = transform * v3;
 
 
     //  pos
