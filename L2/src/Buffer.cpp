@@ -62,6 +62,31 @@ bool AbstractBuffer::isCreationPossible() const
 	return true;
 }
 
+DrawType AbstractBuffer::getDrawType() const
+{
+	return m_vertex_buffer.getDrawType();
+}
+
+void AbstractBuffer::setDrawType(const DrawType& draw_type)
+{
+	m_vertex_buffer.setDrawType(draw_type);
+}
+
+Usage AbstractBuffer::getUsage() const
+{
+	return m_vertex_buffer.getUsage();
+}
+
+void AbstractBuffer::setUsage(const Usage& usage)
+{
+	m_vertex_buffer.setUsage(usage);
+}
+
+std::vector<uint32_t> AbstractBuffer::getVertexDimensions() const
+{
+	return m_vertex_dims;
+}
+
 void AbstractBuffer::setVertexDimensions(const std::vector<uint32_t>& vertex_dims)
 {
 	m_vertex_dims = vertex_dims;
@@ -130,6 +155,16 @@ void Buffer::draw()
 	glDrawArrays(static_cast<GLenum>(m_vertex_buffer.getUsage()), 0, m_vertex_buffer.getVerticeCount());
 }
 
+uint32_t Buffer::getPointsPerOjbect() const
+{
+	return m_points_per_object;
+}
+
+void Buffer::setPointsPerObject(const uint32_t& points_per_object)
+{
+	m_points_per_object = points_per_object;
+}
+
 
 IndexedBuffer::IndexedBuffer()
 	:
@@ -195,6 +230,11 @@ void IndexedBuffer::bind() const
 	m_index_buffer.bind();
 }
 
+std::vector<uint32_t> IndexedBuffer::getPattern() const
+{
+	return m_index_buffer.getPattern();
+}
+
 void IndexedBuffer::setPattern(const std::vector<uint32_t>& pattern)
 {
 	m_index_buffer.setPattern(pattern);
@@ -208,6 +248,18 @@ void IndexedBuffer::draw()
 	glDrawElements(static_cast<GLenum>(m_vertex_buffer.getUsage()), m_index_buffer.getIndiceCount(), GL_UNSIGNED_INT, (const void*)0);
 }
 
+
+AutomaticBuffer::AutomaticBuffer()
+:
+m_buffer(nullptr)
+{
+}
+
+AutomaticBuffer::AutomaticBuffer(AbstractBuffer* buffer)
+:
+m_buffer(buffer)
+{
+}
 
 void AutomaticBuffer::create(const uint32_t& object_count)
 {
@@ -227,4 +279,19 @@ void AutomaticBuffer::update(float* data, const uint32_t& id)
 void AutomaticBuffer::reset(const uint32_t& id)
 {
 	m_buffer->reset(id);
+}
+
+AbstractBuffer* AutomaticBuffer::getBuffer()
+{
+	return m_buffer;
+}
+
+void AutomaticBuffer::setBuffer(AbstractBuffer* buffer)
+{
+	m_buffer = buffer;
+}
+
+void AutomaticBuffer::draw()
+{
+	m_buffer->draw();
 }

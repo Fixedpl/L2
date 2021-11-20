@@ -78,7 +78,29 @@ void Texture::loadTexture(const std::string& path)
 	stbi_image_free(data);
 }
 
+TexCoords Texture::getTextureCoordinatesNormalised()
+{
+	return TexCoords();
+}
 
+
+
+TexturePart::TexturePart()
+:
+m_source_texture(nullptr),
+m_width(0.0f),
+m_height(0.0f)
+{
+}
+
+TexturePart::TexturePart(Texture* source)
+:
+TextureSource(source->getTextureSlot()),
+m_source_texture(source),
+m_width(0.0f),
+m_height(0.0f)
+{
+}
 
 TexturePart::TexturePart(Texture* source, const TexCoords& tex_coords_rel)
 	: 
@@ -134,4 +156,48 @@ TexCoords TexturePart::setTextureCoords(const glm::vec2& top_left_rel, const glm
 TexCoords TexturePart::getTextureCoordinatesNormalised()
 {
 	return m_tex_coords;
+}
+
+TexCoords::TexCoords()
+:
+top_left(0.0f, 1.0f),
+bot_left(0.0f, 0.0f),
+bot_right(1.0f, 0.0f),
+top_right(1.0f, 1.0f)
+{
+}
+
+TexCoords::TexCoords(const glm::vec2& _top_left, const glm::vec2& _bot_right)
+:
+top_left(_top_left),
+bot_left(_top_left.x, _bot_right.y),
+bot_right(_bot_right),
+top_right(_bot_right.x, _top_left.y)
+{
+}
+
+TexCoords::TexCoords(const glm::vec2& _top_left, const glm::vec2& _bot_left, const glm::vec2& _bot_right, const glm::vec2& _top_right)
+:
+top_left(_top_left),
+bot_left(_bot_left),
+bot_right(_bot_right),
+top_right(_top_right)
+{
+}
+
+TextureSource::TextureSource()
+:
+m_texture_slot(0.0f)
+{
+}
+
+TextureSource::TextureSource(const uint32_t& texture_slot)
+:
+m_texture_slot(texture_slot)
+{
+}
+
+void TextureSource::setTextureSlot(const float& texture_slot)
+{
+	m_texture_slot = texture_slot;
 }

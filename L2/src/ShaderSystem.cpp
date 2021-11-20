@@ -4,13 +4,17 @@
 
 ShaderSystem::ShaderSystem()
 {
-    //m_mvp = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f);
 }
 
 ShaderSystem::~ShaderSystem()
 {
     for (auto& shader : m_shaders)
         delete shader;
+}
+
+void ShaderSystem::add(Shader* shader)
+{
+    m_shaders.push_back(shader);
 }
 
 void ShaderSystem::setProjectionMatrix(const float& left, const float& right, const float& bottom, const float& top)

@@ -21,13 +21,13 @@ public:
 
 	virtual void reset(const uint32_t& object_count_offset) = 0;
 
-	DrawType getDrawType() const { return m_vertex_buffer.getDrawType(); }
-	void setDrawType(const DrawType& draw_type) { m_vertex_buffer.setDrawType(draw_type); }
+	DrawType getDrawType() const;
+	void setDrawType(const DrawType& draw_type);
 
-	Usage getUsage() const { return m_vertex_buffer.getUsage(); }
-	void setUsage(const Usage& usage) { m_vertex_buffer.setUsage(usage); }
+	Usage getUsage() const;
+	void setUsage(const Usage& usage);
 
-	std::vector<uint32_t> getVertexDimensions() const { return m_vertex_dims; }
+	std::vector<uint32_t> getVertexDimensions() const;
 	void setVertexDimensions(const std::vector<uint32_t>& vertex_dims);
 
 	virtual void draw() = 0;
@@ -73,8 +73,8 @@ public:
 
 	void draw();
 
-	uint32_t getPointsPerOjbect() const { return m_points_per_object; }
-	void setPointsPerObject(const uint32_t& points_per_object) { m_points_per_object = points_per_object; }
+	uint32_t getPointsPerOjbect() const;
+	void setPointsPerObject(const uint32_t& points_per_object);
 
 	void bind() const;
 
@@ -101,7 +101,7 @@ public:
 
 	void reset(const uint32_t& object_count_offset);
 
-	std::vector<uint32_t> getPattern() const { return m_index_buffer.getPattern(); }
+	std::vector<uint32_t> getPattern() const;
 	void setPattern(const std::vector<uint32_t>& pattern);
 
 	void draw();
@@ -120,8 +120,8 @@ class AutomaticBuffer : private IDHandler
 {
 public:
 
-	AutomaticBuffer() : m_buffer(nullptr) {}
-	AutomaticBuffer(AbstractBuffer* buffer) : m_buffer(buffer) {}
+	AutomaticBuffer();
+	AutomaticBuffer(AbstractBuffer* buffer);
 
 	void create(const uint32_t& object_count);
 
@@ -133,10 +133,10 @@ public:
 
 	void pushId(const uint32_t& id) { add(id); }
 
-	AbstractBuffer* getBuffer() { return m_buffer; }
-	void setBuffer(AbstractBuffer* buffer) { m_buffer = buffer; }
+	AbstractBuffer* getBuffer();
+	void setBuffer(AbstractBuffer* buffer);
 
-	void draw() { return m_buffer->draw(); }
+	void draw();
 
 private:
 

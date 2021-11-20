@@ -9,8 +9,8 @@ class Drawable;
 
 struct Container
 {
-	Container() : buffer(nullptr), shader(nullptr) {}
-	Container(AutomaticBuffer* _buffer, Shader* _shader) : buffer(_buffer), shader(_shader) {}
+	Container();
+	Container(AutomaticBuffer* _buffer, Shader* _shader);
 
 	AutomaticBuffer* buffer;
 	Shader* shader;
@@ -18,7 +18,7 @@ struct Container
 
 struct Entry
 {
-	Entry() : container(0), id(0) {}
+	Entry();
 	Entry(const uint32_t& _container, const uint32_t& _id) : container(_container), id(_id) {}
 
 	uint32_t container;
@@ -27,8 +27,9 @@ struct Entry
 
 struct State
 {
-	State() : data(nullptr) {}
-	State(const Entry& _entry, float* _data) : entry(_entry), data(_data) {}
+	State();
+	State(const Entry& _entry, float* _data);
+
 	Entry entry;
 	float* data;
 };

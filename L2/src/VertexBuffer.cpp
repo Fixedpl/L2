@@ -42,6 +42,11 @@ void VertexBufferLayout::bind() const {
 	glBindVertexArray(m_id);
 }
 
+std::vector<VertexAttributeElement> VertexBufferLayout::getAttributeElements() const
+{
+	return m_va_elements;
+}
+
 uint32_t VertexBufferLayout::getSizeOfAttributeElementsDimensions() const
 {
 	uint32_t sum = 0;
@@ -113,4 +118,29 @@ void VertexBuffer::update(void* data, const uint32_t& vertice_size, const uint32
 	}
 	
 	glBufferSubData(GL_ARRAY_BUFFER, vertice_size * count_offset, vertice_size * vertice_count, data);
+}
+
+DrawType VertexBuffer::getDrawType() const
+{
+	return m_draw_type;
+}
+
+void VertexBuffer::setDrawType(const DrawType& draw_type)
+{
+	m_draw_type = draw_type;
+}
+
+Usage VertexBuffer::getUsage() const
+{
+	return m_usage;
+}
+
+void VertexBuffer::setUsage(const Usage& usage)
+{
+	m_usage = usage;
+}
+
+uint32_t VertexBuffer::getVerticeCount() const
+{
+	return m_vertice_count;
 }

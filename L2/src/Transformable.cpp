@@ -107,28 +107,6 @@ glm::mat4 Transformable::getWorldTransform()
 	return world_transform;
 }
 
-/*
-glm::mat4 Transformable::getWorldTransform()
-{
-	float scale = getScale();
-	float rotation = getRotation();
-	glm::vec3 position = getPosition() - getOrigin();
-
-	Transformable* it = m_parent;
-	while (it) {
-		scale *= it->getScale();
-		rotation += it->getRotation();
-		position += it->getPosition() - it->getOrigin();
-		it = it->m_parent;
-	}
-
-	glm::mat4 world_transform = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
-	world_transform = glm::rotate(world_transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	world_transform = glm::translate(world_transform, position);
-
-	return world_transform;
-}
-*/
 const glm::mat4& Transformable::getTransform()
 {
 	if (m_matrix_requires_update) {

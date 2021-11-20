@@ -28,7 +28,7 @@ public:
 
 	void bind() const;
 
-	std::vector<VertexAttributeElement> getAttributeElements() const { return m_va_elements; }
+	std::vector<VertexAttributeElement> getAttributeElements() const;
 
 	uint32_t getSizeOfAttributeElementsDimensions() const;
 
@@ -60,13 +60,13 @@ public:
 	void update(void* data, const uint32_t& vertice_size, const uint32_t& vertice_count);
 	void update(void* data, const uint32_t& vertice_size, const uint32_t& vertice_count, const uint32_t& count_offset);
 
-	DrawType getDrawType() const { return m_draw_type; }
-	void setDrawType(const DrawType& draw_type) { m_draw_type = draw_type; }
+	DrawType getDrawType() const;
+	void setDrawType(const DrawType& draw_type);
 
-	Usage getUsage() const { return m_usage; }
-	void setUsage(const Usage& usage) { m_usage = usage; }
+	Usage getUsage() const;
+	void setUsage(const Usage& usage);
 
-	uint32_t getVerticeCount() const { return m_vertice_count; }
+	uint32_t getVerticeCount() const;
 
 private:
 

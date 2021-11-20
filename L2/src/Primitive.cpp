@@ -131,19 +131,3 @@ bool PointBase::perforates(const glm::vec2& point)
 	if (m_position.x == point_transform.x && m_position.y == point_transform.y) return true;
 	return false;
 }
-
-Colorable::Colorable(const glm::vec4& color)
-:
-	m_color(color)
-{
-}
-
-glm::vec4 Colorable::getColor() const
-{
-	return m_color;
-}
-
-void Colorable::setColor(const glm::vec4& color)
-{
-	m_color = color;
-}

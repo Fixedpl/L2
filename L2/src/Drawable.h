@@ -5,6 +5,22 @@
 #include "RenderWindow.h"
 #include "Clickable.h"
 
+
+class Colorable
+{
+public:
+
+	Colorable(const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+	glm::vec4 getColor() const;
+	virtual void setColor(const glm::vec4& color);
+
+protected:
+
+	glm::vec4 m_color;
+
+};
+
 class Drawable : public Colorable
 {
 public:
@@ -26,8 +42,7 @@ class BufferFiller : virtual public Drawable
 protected:
 
 	BufferFiller(RenderWindow* renderer,
-				 const Entry& entry, 
-				 const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				 const Entry& entry);
 
 	virtual ~BufferFiller();
 

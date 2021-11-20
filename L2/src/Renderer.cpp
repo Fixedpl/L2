@@ -165,4 +165,36 @@ void Renderer::init()
 
 }
 
+Container::Container()
+:
+buffer(nullptr),
+shader(nullptr)
+{
+}
 
+Container::Container(AutomaticBuffer* _buffer, Shader* _shader)
+:
+buffer(_buffer),
+shader(_shader)
+{
+}
+
+Entry::Entry()
+:
+container(0), 
+id(0)
+{
+}
+
+State::State()
+:
+data(nullptr)
+{
+}
+
+State::State(const Entry& _entry, float* _data)
+:
+entry(_entry),
+data(_data)
+{
+}

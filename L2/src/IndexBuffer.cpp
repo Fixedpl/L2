@@ -102,10 +102,30 @@ void IndexBuffer::update(uint32_t* data, const uint32_t& indice_count, const uin
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * count_offset, indice_count * sizeof(uint32_t), data);
 }
 
+std::vector<uint32_t> IndexBuffer::getPattern() const
+{
+	return m_pattern;
+}
+
 void IndexBuffer::setPattern(const std::vector<uint32_t>& pattern)
 {
 	m_pattern = pattern;
 	calculateFigureDetails();
+}
+
+DrawType IndexBuffer::getDrawType() const
+{
+	return m_draw_type;
+}
+
+void IndexBuffer::setDrawType(const DrawType& draw_type)
+{
+	m_draw_type = draw_type;
+}
+
+uint32_t IndexBuffer::getIndiceCount() const
+{
+	return m_indice_count;
 }
 
 bool IndexBuffer::isCreationPossible() const
@@ -120,6 +140,16 @@ bool IndexBuffer::isCreationPossible() const
 		return false;
 	}
 	return true;
+}
+
+uint32_t IndexBuffer::getVerticeCountPerFigure() const
+{
+	return m_vertice_count_per_figure;
+}
+
+uint32_t IndexBuffer::getIndiceCountPerFigure() const
+{
+	return m_indice_count_per_figure;
 }
 
 void IndexBuffer::calculateFigureDetails()

@@ -13,7 +13,7 @@ public:
 	ShaderSystem();
 	~ShaderSystem();
 
-	void add(Shader* shader) { m_shaders.push_back(shader); }
+	void add(Shader* shader);
 
 	void setProjectionMatrix(const float& left, const float& right, const float& bottom, const float& top);
 

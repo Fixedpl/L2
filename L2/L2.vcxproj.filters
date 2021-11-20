@@ -1419,32 +1419,11 @@
     <Image Include="res\texture\adios.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
-    <Image Include="res\texture\waterfall.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="res\texture\waterfall2.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
-    <Image Include="res\texture\woodwall.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
     <Image Include="res\font\arial_atlas.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\font\arial.ttf" />
-    <Font Include="res\font\comic.ttf" />
-    <Font Include="res\font\comicbd.ttf" />
-    <Font Include="res\font\comici.ttf" />
-    <Font Include="res\font\comicz.ttf" />
-    <Font Include="res\font\consola.ttf" />
-    <Font Include="res\font\consolab.ttf" />
-    <Font Include="res\font\consolai.ttf" />
-    <Font Include="res\font\consolaz.ttf" />
-    <Font Include="res\font\verdana.ttf" />
-    <Font Include="res\font\verdanab.ttf" />
-    <Font Include="res\font\verdanai.ttf" />
-    <Font Include="res\font\verdanaz.ttf" />
   </ItemGroup>
 </Project>

@@ -22,18 +22,18 @@ public:
 	void update(uint32_t* data, const uint32_t& indice_count);
 	void update(uint32_t* data, const uint32_t& indice_count, const uint32_t& count_offset);
 
-	std::vector<uint32_t> getPattern() const { return m_pattern; }
+	std::vector<uint32_t> getPattern() const;
 	void setPattern(const std::vector<uint32_t>& pattern);
 
-	DrawType getDrawType() const { return m_draw_type; }
-	void setDrawType(const DrawType& draw_type) { m_draw_type = draw_type; }
+	DrawType getDrawType() const;
+	void setDrawType(const DrawType& draw_type);
 
-	uint32_t getIndiceCount() const { return m_indice_count; }
+	uint32_t getIndiceCount() const;
 
 	bool isCreationPossible() const;
 
-	uint32_t getVerticeCountPerFigure() const { return m_vertice_count_per_figure; }
-	uint32_t getIndiceCountPerFigure() const { return m_indice_count_per_figure; }
+	uint32_t getVerticeCountPerFigure() const;
+	uint32_t getIndiceCountPerFigure() const;
 
 private:
 

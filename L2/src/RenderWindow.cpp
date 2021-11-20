@@ -43,7 +43,7 @@ void RenderWindow::checkClickables()
 {
 	if (isLeftMousePressed()) {
 		glm::vec2 mouse_pos = getLastMousePosition();
-		//std::cout << "CHECKING COORDINATES: " << mouse_pos.x << ":" << mouse_pos.y << "FOR " << m_clickables.size() << "ELEMENTS\n";
+
 		for (auto& clickable : m_clickables) {
 			if (clickable->perforates(mouse_pos)) {
 				clickable->onClick();

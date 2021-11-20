@@ -6,11 +6,27 @@
 #include "Texture.h"
 #include "RenderWindow.h"
 
+Colorable::Colorable(const glm::vec4& color)
+    :
+    m_color(color)
+{
+}
+
+glm::vec4 Colorable::getColor() const
+{
+    return m_color;
+}
+
+void Colorable::setColor(const glm::vec4& color)
+{
+    m_color = color;
+}
+
+
 BufferFiller::BufferFiller(RenderWindow* renderer,
-                           const Entry& entry, 
-                           const glm::vec4& color)
+                           const Entry& entry)
 :
-Drawable(color),
+Drawable(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)),
 m_renderer(renderer), 
 m_entry(entry)
 {
@@ -36,10 +52,11 @@ void BufferFiller::draw()
 
 Rectangle::Rectangle(RenderWindow* renderer, const glm::vec3& pos, const float& width, const float& height, const glm::vec4& color)
 :
-BufferFiller(renderer, renderer->getRectangleEntry(), color),
+BufferFiller(renderer, renderer->getRectangleEntry()),
 RectangleBase(width, height)
 {
     setPosition(pos);
+    setColor(color);
 }
 
 
@@ -80,7 +97,7 @@ void Rectangle::populateBuffer(float* data)
 
 Circle::Circle(RenderWindow* renderer, const glm::vec3& pos, const float& radius, const glm::vec4& color)
 :
-BufferFiller(renderer, renderer->getCircleEntry(), color),
+BufferFiller(renderer, renderer->getCircleEntry()),
 CircleBase(radius)
 {
     setPosition(pos);
@@ -134,10 +151,11 @@ void Circle::populateBuffer(float* data)
 
 Line::Line(RenderWindow* renderer, const glm::vec3& pos1, const glm::vec3& pos2, const glm::vec4& color)
 :
-BufferFiller(renderer, renderer->getLineEntry(), color),
+BufferFiller(renderer, renderer->getLineEntry()),
 LineBase(pos1, pos2)
 {
     setPosition(pos1);
+    setColor(color);
 }
 
 
@@ -174,10 +192,11 @@ void Line::populateBuffer(float* data)
 
 Point::Point(RenderWindow* renderer, const glm::vec3& pos, const glm::vec4& color)
 :
-BufferFiller(renderer, renderer->getPointEntry(), color),
+BufferFiller(renderer, renderer->getPointEntry()),
 PointBase(pos)
 {
     setPosition(pos);
+    setColor(color);
 }
 
 
@@ -209,20 +228,22 @@ void Point::populateBuffer(float* data)
 
 Sprite::Sprite(RenderWindow* renderer, TextureSource* texture_source, const glm::vec3& pos, const float& width, const float& height, const glm::vec4& color)
 :
-BufferFiller(renderer, renderer->getSpriteEntry(texture_source->getTextureSlot()), color),
+BufferFiller(renderer, renderer->getSpriteEntry(texture_source->getTextureSlot())),
 RectangleBase(width, height),
 m_texture_source(texture_source)
 {
     setPosition(pos);
+    setColor(color);
 }
 
 Sprite::Sprite(RenderWindow* renderer, TextureSource* texture_source, const glm::vec3& pos, const float& width, const float& height, const uint32_t& text_size, const glm::vec4& color)
 :
-BufferFiller(renderer, renderer->getSpriteEntry(0), color),
+BufferFiller(renderer, renderer->getSpriteEntry(0)),
 RectangleBase(width, height),
 m_texture_source(texture_source)
 {
     setPosition(pos);
+    setColor(color);
 }
 
 inline uint32_t Sprite::getArraySize() const

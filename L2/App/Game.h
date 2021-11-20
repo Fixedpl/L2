@@ -3,7 +3,7 @@
 #include "RenderWindow.h"
 #include "Drawable.h"
 #include "Text.h"
-
+#include "Animation.h"
 
 
 class Game : protected RenderWindow
